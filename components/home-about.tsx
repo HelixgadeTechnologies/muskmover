@@ -14,7 +14,7 @@ export default function HomeAbout() {
             <ScrollReveal direction="left">
               <div className="relative aspect-[4/5] rounded-xl overflow-hidden shadow-2xl">
                 <Image
-                  src="/professional-man-portrait.png" // Reusing available professional portraits
+                  src="/african-sailor-portrait.png" // Reusing available professional portraits
                   alt="Maritime Team"
                   fill
                   className="object-cover"

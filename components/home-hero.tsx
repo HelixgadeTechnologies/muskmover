@@ -47,7 +47,7 @@ export default function HomeHero() {
                 Partner With Us
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button variant="outline" className="border-white text-white hover:bg-white hover:text-[#050B20] h-14 px-8 text-base font-bold rounded-none transition-all">
+              <Button className="bg-[#050B20] border-2 border-white text-white hover:bg-white hover:text-[#050B20] h-14 px-8 text-base font-bold rounded-none transition-all">
                 View Our Services
               </Button>
             </div>
