@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Facebook, Twitter, Instagram, Linkedin, ArrowUp } from "lucide-react"
+import { Twitter, Instagram, Linkedin, ArrowUp } from "lucide-react"
 import { AnimatePresence, motion } from "framer-motion"
 
 export default function Footer() {
@@ -44,16 +44,30 @@ export default function Footer() {
             </div>
             <h5 className="text-[17px] font-bold text-slate-900 mb-6">Connect With Us</h5>
             <div className="flex gap-6">
-              <Link href="#" className="text-slate-900 hover:text-red-600 transition-colors">
-                <Facebook className="w-5 h-5 fill-current" />
+              <Link href="https://www.tiktok.com/@muskmover.ltd" className="text-slate-900 hover:text-red-600 transition-colors" target="_blank" rel="noopener noreferrer">
+                {/* TikTok Icon replacement for Facebook */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-5 h-5"
+                >
+                  <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+                </svg>
               </Link>
-              <Link href="#" className="text-slate-900 hover:text-red-600 transition-colors">
+              <Link href="https://x.com/MuskMover" className="text-slate-900 hover:text-red-600 transition-colors" target="_blank" rel="noopener noreferrer">
                 <Twitter className="w-5 h-5 fill-current" />
               </Link>
-              <Link href="#" className="text-slate-900 hover:text-red-600 transition-colors">
+              <Link href="https://www.instagram.com/muskmover/" className="text-slate-900 hover:text-red-600 transition-colors" target="_blank" rel="noopener noreferrer">
                 <Instagram className="w-5 h-5" />
               </Link>
-              <Link href="#" className="text-slate-900 hover:text-red-600 transition-colors">
+              <Link href="https://www.linkedin.com/company/muskmover-nig-ltd/" className="text-slate-900 hover:text-red-600 transition-colors" target="_blank" rel="noopener noreferrer">
                 <Linkedin className="w-5 h-5 fill-current" />
               </Link>
             </div>

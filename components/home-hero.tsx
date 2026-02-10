@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { ArrowRight, Play } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import ScrollReveal from "./scroll-reveal"
@@ -43,10 +44,12 @@ export default function HomeHero() {
 
           <ScrollReveal direction="up" delay={0.2}>
             <div className="flex flex-wrap gap-4 mb-20">
-              <Button className="bg-orange-600 hover:bg-orange-700 text-white h-14 px-8 text-base font-bold rounded-none group">
-                Partner With Us
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
+              <Link href="/contact">
+                <Button className="bg-orange-600 hover:bg-orange-700 text-white h-14 px-8 text-base font-bold rounded-none group">
+                  Partner With Us
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
               <Button className="bg-[#050B20] border-2 border-white text-white hover:bg-white hover:text-[#050B20] h-14 px-8 text-base font-bold rounded-none transition-all">
                 View Our Services
               </Button>

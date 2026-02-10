@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import ScrollReveal from "./scroll-reveal"
 
@@ -22,9 +23,11 @@ export default function HomeCTA() {
 
           <ScrollReveal direction="up" delay={0.2}>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="bg-orange-600 hover:bg-orange-700 text-white h-14 px-10 text-base font-bold rounded-none">
-                Let's Work Together
-              </Button>
+              <Link href="/contact">
+                <Button className="bg-orange-600 hover:bg-orange-700 text-white h-14 px-10 text-base font-bold rounded-none">
+                  Let's Work Together
+                </Button>
+              </Link>
             </div>
           </ScrollReveal>
         </div>
