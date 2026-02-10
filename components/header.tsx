@@ -12,7 +12,8 @@ export default function Header() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/listings", label: "Listings", hasDropdown: true },
+    { href: "/services", label: "Services" },
+    { href: "/marketplace", label: "Marketplace" },
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
   ]
@@ -23,7 +24,7 @@ export default function Header() {
         {/* Left: Logo */}
         <div className="flex-shrink-0">
           <Link href="/" className="flex items-center">
-            <Image src="/logo.png" alt="MuskMover Logo" width={56} height={56} className="w-14 h-14" priority />
+            <Image src="/logo.png" alt="MuskMover Logo" width={67} height={56} className="w-[67px] h-14" priority />
           </Link>
         </div>
 
@@ -55,7 +56,7 @@ export default function Header() {
               variant="outline"
               className="hidden sm:inline-flex border-slate-300 text-slate-700 px-6 h-11 text-[15px] font-medium rounded-none hover:bg-slate-50 hover:text-slate-900 transition-all"
             >
-              Submit Listing
+              Partner With Us
             </Button>
           </Link>
           <Button

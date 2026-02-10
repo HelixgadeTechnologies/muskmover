@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import ScrollReveal from "./scroll-reveal"
 
@@ -33,9 +34,11 @@ export default function CTASection() {
         </ScrollReveal>
 
         <ScrollReveal direction="up" delay={0.2} duration={0.8}>
-          <button className="px-10 py-4 border-2 border-[#6B0D0D] text-[#6B0D0D] text-[15px] font-bold uppercase tracking-wider hover:bg-[#6B0D0D] hover:text-white transition-all">
-            Find Out More
-          </button>
+          <Link href="/marketplace/category">
+            <button className="px-10 py-4 border-2 border-[#6B0D0D] text-[#6B0D0D] text-[15px] font-bold uppercase tracking-wider hover:bg-[#6B0D0D] hover:text-white transition-all">
+              Find Out More
+            </button>
+          </Link>
         </ScrollReveal>
       </div>
     </section>
