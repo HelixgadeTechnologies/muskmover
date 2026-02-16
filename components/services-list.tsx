@@ -65,7 +65,7 @@ const services = [
       { label: "Hardened Platforms", sublabel: "Anti-piracy and intrusion prevention" }
     ],
     cta: "View Security Solutions",
-    image: "/maritime-security.png",
+    image: "/maritime-security-v2.png",
     reverse: false
   },
   {
@@ -78,7 +78,7 @@ const services = [
       "Emergency salvage and spill response"
     ],
     cta: "Learn Technical Specs",
-    image: "/towing-tugs.png",
+    image: "/towing-tugs-v2.png",
     reverse: true
   },
   {

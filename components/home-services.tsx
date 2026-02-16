@@ -29,12 +29,12 @@ const capabilities = [
   {
     title: "Maritime Security",
     description: "Comprehensive security solutions for vessels operating in high-risk offshore zones.",
-    image: "/oil-tanker-ship.jpg"
+    image: "/maritime-security-v2.png"
   },
   {
     title: "Towing Tugs",
     description: "High-bollard pull tugs for harbor assistance and long-distance ocean towing.",
-    image: "/large-cargo-ship.png"
+    image: "/towing-tugs-v2.png"
   }
 ]
 
