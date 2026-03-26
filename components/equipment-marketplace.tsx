@@ -27,7 +27,7 @@ export default function EquipmentMarketplace() {
         const res = await fetch('https://musk-backend.onrender.com/api/equipment')
         const json = await res.json()
         const data = Array.isArray(json.data) ? json.data : Array.isArray(json) ? json : []
-        setEquipmentList(data.slice(0, 5))
+        setEquipmentList(data.slice(0, 4))
       } catch (error) {
         console.error("Failed to fetch equipment", error)
       } finally {

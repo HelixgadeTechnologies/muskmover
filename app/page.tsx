@@ -3,6 +3,7 @@ import HomeHero from "@/components/home-hero"
 import HomeAbout from "@/components/home-about"
 import HomeWhyChooseUs from "@/components/home-why-choose-us"
 import HomeServices from "@/components/home-services"
+import EquipmentMarketplace from "@/components/equipment-marketplace"
 import HomePrinciples from "@/components/home-principles"
 import HomeCTA from "@/components/home-cta"
 import Footer from "@/components/footer"
@@ -15,6 +16,7 @@ export default function Home() {
       <HomeAbout />
       <HomeWhyChooseUs />
       <HomeServices />
+      <EquipmentMarketplace />
       <HomePrinciples />
       <HomeCTA />
       <Footer />
