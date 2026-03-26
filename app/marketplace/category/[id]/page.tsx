@@ -2,7 +2,8 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useParams } from "next/navigation"
+import { useEffect, useState } from "react"
 import { Star, ShieldCheck, ChevronRight, ArrowRight, Check, Truck, Clock, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Header from "@/components/header"
@@ -64,8 +65,73 @@ const similarItems = [
 const tabs = ["Specifications", "Features", "Certifications", "Shipping Info"]
 
 export default function ProductDetailsPage() {
+  const params = useParams()
+  const id = params.id as string
+
   const [activeImage, setActiveImage] = useState(0)
   const [activeTab, setActiveTab] = useState(0)
+  const [equipment, setEquipment] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (!id) return
+    async function fetchDetails() {
+      try {
+        const res = await fetch(`https://musk-backend.onrender.com/api/equipment/${id}`)
+        const json = await res.json()
+        setEquipment(json.data || json)
+      } catch (error) {
+        console.error("Failed to fetch equipment details", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchDetails()
+  }, [id])
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-white text-slate-900 flex flex-col">
+        <Header />
+        <div className="flex-1 flex justify-center items-center py-40 min-h-[500px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+        </div>
+        <Footer />
+      </main>
+    )
+  }
+
+  if (!equipment) {
+    return (
+      <main className="min-h-screen bg-white text-slate-900 flex flex-col">
+        <Header />
+        <div className="flex-1 flex justify-center items-center py-40 min-h-[500px]">
+          <p className="text-xl text-slate-500 font-bold">Equipment not found.</p>
+        </div>
+        <Footer />
+      </main>
+    )
+  }
+
+  // Parse images
+  let parsedImages = productImages
+  if (equipment.images) {
+    if (Array.isArray(equipment.images) && equipment.images.length > 0 && typeof equipment.images[0] === 'string') {
+      parsedImages = equipment.images
+    } else if (typeof equipment.images === 'string' && equipment.images.trim() !== '') {
+      try {
+        const parsed = JSON.parse(equipment.images)
+        if (Array.isArray(parsed) && parsed.length > 0) parsedImages = parsed
+        else if (typeof parsed === 'string') parsedImages = [parsed]
+      } catch {
+        // Not a JSON string. Might be a comma-separated list of URLs
+        parsedImages = equipment.images.split(',').map((u: string) => u.trim()).filter(Boolean)
+        if (parsedImages.length === 0) parsedImages = productImages
+      }
+    }
+  }
+
+  const safeActiveImage = parsedImages[activeImage] ? activeImage : 0
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
@@ -89,28 +155,32 @@ export default function ProductDetailsPage() {
           <div className="space-y-4">
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-slate-100">
               <Image 
-                src={productImages[activeImage]}
-                alt="Product Image"
+                src={parsedImages[safeActiveImage]}
+                alt={equipment.name || "Product Image"}
                 fill
                 className="object-cover"
               />
             </div>
-            <div className="flex gap-3">
-              {productImages.slice(0, 4).map((img, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActiveImage(i)}
-                  className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
-                    activeImage === i ? "border-orange-500 shadow-lg shadow-orange-500/20" : "border-slate-200 hover:border-slate-400"
-                  }`}
-                >
-                  <Image src={img} alt={`Thumbnail ${i + 1}`} fill className="object-cover" />
-                </button>
-              ))}
-              <div className="w-20 h-20 rounded-xl bg-slate-100 border-2 border-slate-200 flex items-center justify-center text-[12px] font-bold text-slate-500">
-                +{productImages.length - 4} MORE
+            {parsedImages.length > 1 && (
+              <div className="flex gap-3">
+                {parsedImages.slice(0, 4).map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveImage(i)}
+                    className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
+                      safeActiveImage === i ? "border-orange-500 shadow-lg shadow-orange-500/20" : "border-slate-200 hover:border-slate-400"
+                    }`}
+                  >
+                    <Image src={img} alt={`Thumbnail ${i + 1}`} fill className="object-cover" />
+                  </button>
+                ))}
+                {parsedImages.length > 4 && (
+                  <div className="w-20 h-20 rounded-xl bg-slate-100 border-2 border-slate-200 flex items-center justify-center text-[12px] font-bold text-slate-500">
+                    +{parsedImages.length - 4} MORE
+                  </div>
+                )}
               </div>
-            </div>
+            )}
           </div>
 
           {/* Product Info */}
@@ -118,12 +188,12 @@ export default function ProductDetailsPage() {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <span className="bg-orange-600/90 text-white text-[10px] font-bold px-3 py-1.5 uppercase tracking-wider rounded-lg">
-                  Available for Dispatch
+                  {equipment.status || "Available"}
                 </span>
-                <span className="text-slate-500 text-[12px] font-semibold">SKU: MMA-PWR-AMC-150T</span>
+                <span className="text-slate-500 text-[12px] font-semibold">SKU: MM-EQ-{equipment.id}</span>
               </div>
               <h1 className="text-[32px] md:text-[40px] font-black leading-tight text-slate-900">
-                150T Double Drum Heavy-Duty Offshore Winch
+                {equipment.name}
               </h1>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2 text-sm text-slate-600">
@@ -137,7 +207,7 @@ export default function ProductDetailsPage() {
                 </div>
               </div>
               <p className="text-slate-500 text-[15px] leading-relaxed max-w-lg">
-                High-performance hydraulic double drum winch, engineered for extreme deep-water operations. Certified for ABS/DNV standards with advanced tension control systems.
+                {equipment.details || "High-performance equipment, engineered for extreme operations."}
               </p>
             </div>
 
@@ -163,15 +233,15 @@ export default function ProductDetailsPage() {
               </div>
             </div>
 
-            {/* Key Stats */}
+            {/* Key Stats - Dynamic Rates */}
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
-                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Max Pull Force</p>
-                <p className="text-[28px] font-black text-slate-900">1,500 <span className="text-[16px] text-slate-500">kN</span></p>
+                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Daily Rate</p>
+                <p className="text-[28px] font-black text-slate-900">${equipment.dailyRate ? equipment.dailyRate.toLocaleString() : "N/A"}</p>
               </div>
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
-                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Drum Capacity</p>
-                <p className="text-[28px] font-black text-slate-900">2,500m <span className="text-[16px] text-slate-500">(Ø76mm)</span></p>
+                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Monthly Rate</p>
+                <p className="text-[28px] font-black text-slate-900">${equipment.monthlyRate ? equipment.monthlyRate.toLocaleString() : "N/A"}</p>
               </div>
             </div>
           </div>
@@ -209,12 +279,22 @@ export default function ProductDetailsPage() {
           <div className="space-y-8">
             <h3 className="text-xl font-bold text-slate-900">Technical Specifications</h3>
             <div className="space-y-0">
-              {specifications.map((spec, i) => (
-                <div key={i} className="flex items-center justify-between py-5 border-b border-slate-100">
-                  <span className="text-slate-500 text-[15px]">{spec.label}</span>
-                  <span className="text-slate-900 font-bold text-[15px]">{spec.value}</span>
-                </div>
-              ))}
+              <div className="flex items-center justify-between py-5 border-b border-slate-100">
+                <span className="text-slate-500 text-[15px]">Category</span>
+                <span className="text-slate-900 font-bold text-[15px] capitalize">{equipment.category || "General"}</span>
+              </div>
+              <div className="flex items-center justify-between py-5 border-b border-slate-100">
+                <span className="text-slate-500 text-[15px]">Year Manufactured</span>
+                <span className="text-slate-900 font-bold text-[15px]">{equipment.yearManufactured || "N/A"}</span>
+              </div>
+              <div className="flex items-center justify-between py-5 border-b border-slate-100">
+                <span className="text-slate-500 text-[15px]">Condition</span>
+                <span className="text-slate-900 font-bold text-[15px]">{equipment.condition || "N/A"}</span>
+              </div>
+              <div className="flex items-center justify-between py-5 border-b border-slate-100">
+                <span className="text-slate-500 text-[15px]">Weight</span>
+                <span className="text-slate-900 font-bold text-[15px]">{equipment.weight ? `${equipment.weight.toLocaleString()} kg` : "N/A"}</span>
+              </div>
             </div>
           </div>
 

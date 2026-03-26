@@ -5,6 +5,7 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 interface EquipmentCardProps {
+  id?: number
   title: string
   image: string
   tags: string[]
@@ -14,9 +15,9 @@ interface EquipmentCardProps {
   isNew?: boolean
 }
 
-export default function EquipmentCard({ title, image, tags, specs, price, priceLabel, isNew }: EquipmentCardProps) {
+export default function EquipmentCard({ id, title, image, tags, specs, price, priceLabel, isNew }: EquipmentCardProps) {
   return (
-    <Link href="/marketplace/category/1" className="block h-full">
+    <Link href={`/marketplace/category/${id || 1}`} className="block h-full">
       <div className="group bg-slate-50 border border-slate-100 rounded-none overflow-hidden hover:shadow-2xl transition-all h-full flex flex-col">
         <div className="relative aspect-video overflow-hidden">
           <Image

@@ -1,6 +1,7 @@
 "use client"
 
 import { ChevronLeft, ChevronRight, ChevronDown, Settings, MapPin, Gauge, Fuel, Users, Package, Shield } from "lucide-react"
+import { useEffect, useState } from "react"
 import EquipmentCard from "./equipment-card"
 
 const mockItems = [
@@ -87,13 +88,32 @@ const mockItems = [
 
 
 export default function EquipmentGrid() {
+  const [equipmentList, setEquipmentList] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchEquipment() {
+      try {
+        const res = await fetch('https://musk-backend.onrender.com/api/equipment')
+        const json = await res.json()
+        const data = Array.isArray(json.data) ? json.data : Array.isArray(json) ? json : []
+        setEquipmentList(data)
+      } catch (error) {
+        console.error("Failed to fetch equipment", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchEquipment()
+  }, [])
+
   return (
     <div className="flex-1 space-y-12">
       {/* Header Info */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-slate-100">
         <div>
           <h2 className="text-[28px] md:text-[36px] font-bold text-slate-900 mb-2">Marine Equipment Marketplace</h2>
-          <p className="text-slate-500 font-medium">Showing 1,240 items available in Nigeria</p>
+          <p className="text-slate-500 font-medium">Showing {loading ? "..." : equipmentList.length || 1240} items available in Nigeria</p>
         </div>
         <div className="flex items-center gap-4">
           <span className="text-slate-400 text-sm font-bold">Sort by:</span>
@@ -105,11 +125,60 @@ export default function EquipmentGrid() {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-        {mockItems.map((item, idx) => (
-          <EquipmentCard key={idx} {...item} specs={item.specs as any} />
-        ))}
-      </div>
+      {loading ? (
+        <div className="flex justify-center items-center py-20 min-h-[400px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900"></div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {equipmentList.length > 0 ? equipmentList.map((item, idx) => {
+            // Determine image
+            let imageUrl = "/marine-diesel-engine.jpg"
+            if (item.images) {
+              if (Array.isArray(item.images) && item.images.length > 0 && typeof item.images[0] === 'string') {
+                imageUrl = item.images[0]
+              } else if (typeof item.images === 'string' && item.images.trim() !== '') {
+                try {
+                  const parsed = JSON.parse(item.images)
+                  if (Array.isArray(parsed) && parsed.length > 0) imageUrl = parsed[0]
+                  else if (typeof parsed === 'string') imageUrl = parsed
+                } catch {
+                  const splitImgs = item.images.split(',').map((u: string) => u.trim()).filter(Boolean)
+                  if (splitImgs.length > 0) imageUrl = splitImgs[0]
+                }
+              }
+            }
+
+            const isNew = item.condition && item.condition.toLowerCase() === 'new'
+            const tags = item.category ? [item.category.toUpperCase()] : ["GENERAL"]
+            const price = item.dailyRate ? `$${item.dailyRate.toLocaleString()}` : (item.monthlyRate ? `$${item.monthlyRate.toLocaleString()}` : "N/A")
+            const priceLabel = item.dailyRate ? "DAILY RATE" : (item.monthlyRate ? "MONTHLY RATE" : "")
+            const specs = [
+              { icon: Gauge, label: "Year", value: item.yearManufactured ? item.yearManufactured.toString() : "N/A" },
+              { icon: Settings, label: "Weight", value: item.weight ? `${item.weight.toLocaleString()} kg` : "N/A" },
+              { icon: MapPin, label: "Condition", value: item.condition || "N/A" },
+            ]
+
+            return (
+              <EquipmentCard 
+                key={item.id || idx} 
+                id={item.id}
+                title={item.name || "Equipment"}
+                image={imageUrl}
+                tags={tags}
+                isNew={isNew}
+                specs={specs as any}
+                price={price}
+                priceLabel={priceLabel}
+              />
+            )
+          }) : (
+            mockItems.map((item, idx) => (
+              <EquipmentCard key={idx} {...item} specs={item.specs as any} />
+            ))
+          )}
+        </div>
+      )}
 
       {/* Pagination */}
       <div className="pt-12 flex items-center justify-center gap-3">
