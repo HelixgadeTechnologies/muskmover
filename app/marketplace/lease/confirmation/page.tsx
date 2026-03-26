@@ -26,8 +26,6 @@ const enquirySummary = {
   endDate: "June 15, 2024",
   duration: "92 Days",
   crewRequested: true,
-  baseRate: "₦ 45,000 / Day",
-  estimatedTotal: "₦ 4,140,000",
 }
 
 export default function LeaseConfirmationPage() {
@@ -164,15 +162,11 @@ export default function LeaseConfirmationPage() {
                   <span className="text-slate-500 text-[14px]">Total Duration</span>
                   <span className="font-bold text-orange-600 text-[14px]">{enquirySummary.duration}</span>
                 </div>
-                <div className="flex items-center justify-between py-3 border-b border-slate-100">
+                <div className="flex items-center justify-between py-3">
                   <span className="text-slate-500 text-[14px]">Crew/Operator Requested</span>
                   <span className={`font-bold text-[14px] ${enquirySummary.crewRequested ? "text-green-600" : "text-slate-400"}`}>
                     {enquirySummary.crewRequested ? "Yes" : "No"}
                   </span>
-                </div>
-                <div className="flex items-center justify-between py-3">
-                  <span className="text-slate-500 text-[14px]">Base Rate</span>
-                  <span className="font-bold text-slate-900 text-[14px]">{enquirySummary.baseRate}</span>
                 </div>
               </div>
             </div>
@@ -180,35 +174,6 @@ export default function LeaseConfirmationPage() {
 
           {/* Right Column - Sidebar */}
           <div className="space-y-6">
-            {/* Cost Summary */}
-            <div className="bg-white border border-slate-100 rounded-none overflow-hidden">
-              <div className="bg-slate-900 text-white p-6">
-                <h4 className="text-[13px] font-black tracking-widest uppercase mb-1">Cost Estimate</h4>
-                <p className="text-slate-400 text-[12px]">Subject to final review</p>
-              </div>
-              <div className="p-6 space-y-4">
-                <div className="flex items-center justify-between py-2">
-                  <span className="text-slate-500 text-[13px]">Base Rate × {enquirySummary.duration}</span>
-                  <span className="font-bold text-slate-900 text-[14px]">{enquirySummary.estimatedTotal}</span>
-                </div>
-                <div className="flex items-center justify-between py-2">
-                  <span className="text-slate-500 text-[13px]">Operator Support</span>
-                  <span className="font-bold text-slate-400 text-[14px]">TBD</span>
-                </div>
-                <div className="flex items-center justify-between py-2">
-                  <span className="text-slate-500 text-[13px]">Logistics & Delivery</span>
-                  <span className="font-bold text-slate-400 text-[14px]">TBD</span>
-                </div>
-                <div className="border-t border-slate-100 pt-4 mt-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[13px] font-black text-slate-900 tracking-widest uppercase">Estimated Total</span>
-                    <span className="text-xl font-black text-orange-600">{enquirySummary.estimatedTotal}</span>
-                  </div>
-                  <p className="text-right text-[11px] text-slate-400 mt-1">*Final quote will be provided by our team</p>
-                </div>
-              </div>
-            </div>
-
             {/* What Happens Next */}
             <div className="bg-white border border-slate-100 rounded-none p-6">
               <h4 className="text-[13px] font-black text-slate-900 tracking-widest uppercase mb-5">What Happens Next?</h4>
