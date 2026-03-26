@@ -261,47 +261,7 @@ export default function LeasePage() {
 
           {/* Right Column - Summary Sidebar */}
           <div className="w-full lg:w-[360px] shrink-0 space-y-6">
-            {/* Lease Summary Card */}
-            <div className="bg-white border border-slate-100 rounded-none overflow-hidden">
-              <div className="bg-slate-900 text-white p-6">
-                <div className="flex items-center justify-between mb-2">
-                  <h4 className="text-[13px] font-black tracking-widest uppercase">Lease Summary</h4>
-                  <div className="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center">
-                    <Package className="w-4 h-4 text-white" />
-                  </div>
-                </div>
-                <p className="text-slate-400 text-[12px]">Real-time availability based on selected dates</p>
-              </div>
 
-              <div className="p-6 space-y-5">
-                <div className="flex items-center justify-between py-3 border-b border-slate-100">
-                  <span className="text-slate-500 text-[14px]">Equipment Base Rate</span>
-                  <span className="font-bold text-orange-600 text-[15px]">₦ 45,000 / <span className="text-slate-400 text-[12px]">Day</span></span>
-                </div>
-                <div className="flex items-center justify-between py-3 border-b border-slate-100">
-                  <span className="text-slate-500 text-[14px]">Selected Duration</span>
-                  <span className="font-bold text-slate-900 text-[15px]">0 Days</span>
-                </div>
-                <div className="flex items-center justify-between py-3 border-b border-slate-100">
-                  <span className="text-slate-500 text-[14px]">Operator Support</span>
-                  <span className="font-bold text-slate-400 text-[15px]">Not Selected</span>
-                </div>
-
-                {/* Select Dates CTA */}
-                <div className="bg-orange-50 border-2 border-dashed border-orange-200 p-5 text-center rounded-none">
-                  <p className="text-[10px] font-bold text-orange-600 tracking-widest uppercase mb-1">Availability Estimate</p>
-                  <p className="text-xl font-black text-orange-600 mb-1">SELECT DATES</p>
-                  <p className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Required for Calculation</p>
-                </div>
-
-                {/* Subtotal */}
-                <div className="flex items-center justify-between pt-3">
-                  <span className="text-[13px] font-bold text-slate-900 tracking-widest uppercase">Estimated Subtotal</span>
-                  <span className="text-2xl font-black text-slate-300">₦ —.—</span>
-                </div>
-                <p className="text-right text-[11px] text-slate-400">*Excludes VAT and Logistics</p>
-              </div>
-            </div>
 
             {/* Why Lease With Us */}
             <div className="bg-white border border-slate-100 rounded-none p-6">
