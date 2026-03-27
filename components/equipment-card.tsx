@@ -10,8 +10,8 @@ interface EquipmentCardProps {
   image: string
   tags: string[]
   specs: { icon: any; label: string; value: string }[]
-  price: string
-  priceLabel: string
+  price?: string
+  priceLabel?: string
   isNew?: boolean
 }
 
@@ -44,13 +44,8 @@ export default function EquipmentCard({ id, title, image, tags, specs, price, pr
           <h3 className="text-2xl font-bold text-slate-900 mb-4">{title}</h3>
           
           {/* Specs as description */}
-          <p className="text-slate-600 text-[15px] leading-relaxed mb-2 line-clamp-2">
+          <p className="text-slate-600 text-[15px] leading-relaxed mb-6 line-clamp-2">
             {specs.map(s => `${s.label}: ${s.value}`).join(" · ")}
-          </p>
-
-          {/* Price */}
-          <p className="text-orange-600 font-black text-lg mb-6">
-            {price} <span className="text-slate-400 text-[11px] font-bold uppercase tracking-wider">{priceLabel}</span>
           </p>
 
           <div className="mt-auto">
