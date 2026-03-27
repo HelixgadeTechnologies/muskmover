@@ -75,7 +75,11 @@ const mockItems = [
 
 
 
-export default function EquipmentGrid() {
+interface EquipmentGridProps {
+  selectedCategory: string
+}
+
+export default function EquipmentGrid({ selectedCategory }: EquipmentGridProps) {
   const [equipmentList, setEquipmentList] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -95,13 +99,27 @@ export default function EquipmentGrid() {
     fetchEquipment()
   }, [])
 
+  // Filtering logic
+  const filteredList = equipmentList.filter(item => {
+    if (selectedCategory === "All" || selectedCategory === "All Equipment") return true
+    
+    const itemCat = (item.category || "").toLowerCase().trim()
+    const selectedCat = selectedCategory.toLowerCase().trim()
+
+    // Map UI labels to backend slugs
+    if (selectedCat === "cargo equipment") return itemCat === "cargo-equipment"
+    if (selectedCat === "others") return itemCat === "other"
+    
+    return itemCat === selectedCat
+  })
+
   return (
     <div className="flex-1 space-y-12">
       {/* Header Info */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-slate-100">
         <div>
           <h2 className="text-[28px] md:text-[36px] font-bold text-slate-900 mb-2">Marine Equipment Marketplace</h2>
-          <p className="text-slate-500 font-medium">Showing {loading ? "..." : equipmentList.length || 1240} items available in Nigeria</p>
+          <p className="text-slate-500 font-medium">Showing {loading ? "..." : filteredList.length} items available in Nigeria</p>
         </div>
         <div className="flex items-center gap-4">
           <span className="text-slate-400 text-sm font-bold">Sort by:</span>
@@ -119,7 +137,7 @@ export default function EquipmentGrid() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {equipmentList.length > 0 ? equipmentList.map((item, idx) => {
+          {filteredList.length > 0 ? filteredList.map((item, idx) => {
             // Determine image
             let imageUrl = "/marine-diesel-engine.jpg"
             if (item.images) {

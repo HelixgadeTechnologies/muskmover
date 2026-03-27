@@ -3,11 +3,14 @@
 import { Filter, ChevronDown, Check } from "lucide-react"
 
 const categories = [
-  { id: 'vessels', name: 'Vessels', count: 124, icon: '🚢' },
-  { id: 'drilling', name: 'Drilling Equipment', count: 48, icon: '⚙️' },
-  { id: 'safety', name: 'Safety Gear', count: 86, icon: '🛡️' },
-  { id: 'power', name: 'Power Systems', count: 32, icon: '⚡' },
-  { id: 'subsea', name: 'Subsea Tools', count: 15, icon: '🌊' },
+  { id: 'all', name: 'All Equipment', icon: '📦' },
+  { id: 'cargo-equipment', name: 'Cargo equipment', icon: '🏗️' },
+  { id: 'vessels', name: 'Vessels', icon: '🚢' },
+  { id: 'diving-gear', name: 'Diving Gear', icon: '🤿' },
+  { id: 'navigation', name: 'Navigation', icon: '🧭' },
+  { id: 'safety', name: 'Safety', icon: '🛡️' },
+  { id: 'propulsion', name: 'Propulsion', icon: '⚙️' },
+  { id: 'other', name: 'Others', icon: '📁' },
 ]
 
 const acquisitionTypes = [
@@ -15,7 +18,12 @@ const acquisitionTypes = [
   { id: 'lease', label: 'Long-term Lease' },
 ]
 
-export default function FilterSidebar() {
+interface FilterSidebarProps {
+  selectedCategory: string
+  setSelectedCategory: (category: string) => void
+}
+
+export default function FilterSidebar({ selectedCategory, setSelectedCategory }: FilterSidebarProps) {
   return (
     <aside className="w-full lg:w-72 shrink-0 space-y-10">
       <div className="flex items-center gap-2 text-slate-500 font-bold text-[13px] tracking-widest uppercase mb-8">
@@ -27,24 +35,29 @@ export default function FilterSidebar() {
       <div className="space-y-6">
         <h4 className="text-[12px] font-bold text-slate-400 tracking-widest uppercase">Categories</h4>
         <div className="space-y-2">
-          {categories.map((cat) => (
-            <button 
-              key={cat.id}
-              className={`w-full flex items-center justify-between p-3 rounded-xl transition-all ${
-                cat.id === 'vessels' ? 'bg-orange-50 text-orange-700' : 'hover:bg-slate-50 text-slate-600'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <span className="text-lg">{cat.icon}</span>
-                <span className="text-[14px] font-semibold">{cat.name}</span>
-              </div>
-              <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
-                cat.id === 'vessels' ? 'bg-orange-600 text-white' : 'bg-slate-200 text-slate-500'
-              }`}>
-                {cat.count}
-              </span>
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const isActive = selectedCategory.toLowerCase() === cat.name.toLowerCase() || 
+                           (selectedCategory === "All" && cat.id === "all") ||
+                           selectedCategory.toLowerCase() === cat.id.toLowerCase()
+
+            return (
+              <button 
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.name)}
+                className={`w-full flex items-center justify-between p-3 rounded-xl transition-all ${
+                  isActive ? 'bg-orange-50 text-orange-700' : 'hover:bg-slate-50 text-slate-600'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-lg">{cat.icon}</span>
+                  <span className="text-[14px] font-semibold">{cat.name}</span>
+                </div>
+                {isActive && (
+                  <span className="bg-orange-600 w-2 h-2 rounded-full" />
+                )}
+              </button>
+            )
+          })}
         </div>
       </div>
 
