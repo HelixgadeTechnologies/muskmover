@@ -109,8 +109,7 @@ export default function EquipmentMarketplace() {
                         </div>
 
                         {/* Footer */}
-                        <div className="mt-auto flex items-center justify-between border-t border-slate-800 pt-6">
-                          <span className="text-white text-[18px] font-bold">${(item.dailyRate || 0).toLocaleString()}</span>
+                        <div className="mt-auto flex items-center justify-end border-t border-slate-800 pt-6">
                           <Link href={`/marketplace/category/${item.id}`} className="flex items-center gap-2 text-white text-[13px] font-medium group/link">
                             View Details
                             <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />

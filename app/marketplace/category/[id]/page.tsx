@@ -242,17 +242,7 @@ export default function ProductDetailsPage() {
               </div>
             </div>
 
-            {/* Key Stats - Dynamic Rates */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
-                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Daily Rate</p>
-                <p className="text-[28px] font-black text-slate-900">${equipment.dailyRate ? equipment.dailyRate.toLocaleString() : "N/A"}</p>
-              </div>
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-6">
-                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">Monthly Rate</p>
-                <p className="text-[28px] font-black text-slate-900">${equipment.monthlyRate ? equipment.monthlyRate.toLocaleString() : "N/A"}</p>
-              </div>
-            </div>
+
           </div>
         </div>
       </section>

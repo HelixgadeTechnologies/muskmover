@@ -15,8 +15,6 @@ const mockItems = [
       { icon: Gauge, label: "Engine", value: "4500HP Diesel" },
       { icon: MapPin, label: "Location", value: "Port Harcourt" },
     ],
-    price: "₦45,000,000",
-    priceLabel: "STARTING FROM"
   },
   {
     title: "DP2 Platform Supply Vessel (PSV)",
@@ -28,8 +26,6 @@ const mockItems = [
         { icon: Users, label: "Accommodation", value: "45 pax" },
         { icon: MapPin, label: "Location", value: "Lagos Free Zone" },
     ],
-    price: "₦1,200,000",
-    priceLabel: "DAY RATE"
   },
   {
     title: "Work Class Subsea ROV Unit",
@@ -41,8 +37,6 @@ const mockItems = [
         { icon: Settings, label: "Cameras", value: "4K UHD Triple" },
         { icon: MapPin, label: "Location", value: "Warri Hub" },
     ],
-    price: "₦85,000,000",
-    priceLabel: "FULL UNIT PRICE"
   },
   {
     title: "CAT 3516B Marine Power System",
@@ -54,8 +48,6 @@ const mockItems = [
         { icon: Gauge, label: "RPM", value: "1200 - 1800" },
         { icon: MapPin, label: "Location", value: "Port Harcourt" },
     ],
-    price: "₦22,500,000",
-    priceLabel: "EX-WORKS PRICE"
   },
   {
     title: "High-Pressure Mud Pump F-1600",
@@ -67,8 +59,6 @@ const mockItems = [
         { icon: Settings, label: "Stroke Length", value: "12\"" },
         { icon: MapPin, label: "Location", value: "Warri Hub" },
     ],
-    price: "₦3,500,000",
-    priceLabel: "MONTHLY LEASE"
   },
   {
     title: "TEMPSC Lifeboat System (80 Pax)",
@@ -80,8 +70,6 @@ const mockItems = [
         { icon: Shield, label: "SOLAS Approved", value: "Yes" },
         { icon: MapPin, label: "Location", value: "Lagos Port" },
     ],
-    price: "₦12,400,000",
-    priceLabel: "LIST PRICE"
   }
 ]
 
@@ -151,8 +139,6 @@ export default function EquipmentGrid() {
 
             const isNew = item.condition && item.condition.toLowerCase() === 'new'
             const tags = item.category ? [item.category.toUpperCase()] : ["GENERAL"]
-            const price = item.dailyRate ? `$${item.dailyRate.toLocaleString()}` : (item.monthlyRate ? `$${item.monthlyRate.toLocaleString()}` : "N/A")
-            const priceLabel = item.dailyRate ? "DAILY RATE" : (item.monthlyRate ? "MONTHLY RATE" : "")
             const specs = [
               { icon: Gauge, label: "Year", value: item.yearManufactured ? item.yearManufactured.toString() : "N/A" },
               { icon: Settings, label: "Weight", value: item.weight ? `${item.weight.toLocaleString()} kg` : "N/A" },
@@ -168,8 +154,6 @@ export default function EquipmentGrid() {
                 tags={tags}
                 isNew={isNew}
                 specs={specs as any}
-                price={price}
-                priceLabel={priceLabel}
               />
             )
           }) : (

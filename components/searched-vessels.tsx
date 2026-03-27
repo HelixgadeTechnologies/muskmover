@@ -12,7 +12,6 @@ const vessels = [
   {
     name: "Ford Transit – 2021",
     subtitle: "4.0 D5 PowerPulse Momentum 5dr AWD..",
-    price: "$22,000",
     specs: { miles: "2500 Miles", fuel: "Diesel", transmission: "Manual" },
     image: "/large-container-ship.jpg",
     category: "In Stock"
@@ -20,7 +19,6 @@ const vessels = [
   {
     name: "New GLC – 2023",
     subtitle: "4.0 D5 PowerPulse Momentum 5dr AWD..",
-    price: "$95,000",
     specs: { miles: "50 Miles", fuel: "Petrol", transmission: "Automatic" },
     image: "/oil-tanker-ship.jpg",
     badge: "Low Mileage",
@@ -29,7 +27,6 @@ const vessels = [
   {
     name: "Audi A6 3.5 – New",
     subtitle: "3.5 D5 PowerPulse Momentum 5dr AWD..",
-    price: "$58,000",
     specs: { miles: "100 Miles", fuel: "Petrol", transmission: "Automatic" },
     image: "/large-cargo-ship.png",
     category: "In Stock"
@@ -37,7 +34,6 @@ const vessels = [
   {
     name: "Corolla Altis – 2023",
     subtitle: "3.5 D5 PowerPulse Momentum 5dr AWD..",
-    price: "$45,000",
     specs: { miles: "15000 Miles", fuel: "Petrol", transmission: "CVT" },
     image: "/general-cargo-vessel.jpg",
     category: "In Stock"
@@ -47,7 +43,6 @@ const vessels = [
   {
     name: "Voyager XT – 2022",
     subtitle: "Eco-friendly long-range explorer vessel.",
-    price: "$1,500/day",
     specs: { miles: "1200 Miles", fuel: "Hybrid", transmission: "Auto" },
     image: "/large-container-ship.jpg",
     category: "Rental"
@@ -55,7 +50,6 @@ const vessels = [
   {
     name: "Marine Pro 500",
     subtitle: "Heavy duty rental for industrial use.",
-    price: "$2,800/day",
     specs: { miles: "300 Miles", fuel: "Diesel", transmission: "Manual" },
     image: "/oil-tanker-ship.jpg",
     category: "Rental"
@@ -63,7 +57,6 @@ const vessels = [
   {
     name: "Coastal Star",
     subtitle: "Luxury coastal rental for events.",
-    price: "$5,000/day",
     specs: { miles: "500 Miles", fuel: "Petrol", transmission: "Auto" },
     image: "/large-cargo-ship.png",
     category: "Rental"
@@ -71,7 +64,6 @@ const vessels = [
   {
     name: "Eco-Cruise Alpha",
     subtitle: "Electric powered short-range cruiser.",
-    price: "$800/day",
     specs: { miles: "80 Miles", fuel: "Electric", transmission: "Digital" },
     image: "/general-cargo-vessel.jpg",
     category: "Rental"
@@ -81,7 +73,6 @@ const vessels = [
   {
     name: "Summit Carrier",
     subtitle: "Brand new deep-sea bulk carrier.",
-    price: "$1.2M",
     specs: { miles: "0 Miles", fuel: "LNG", transmission: "Auto" },
     image: "/large-container-ship.jpg",
     category: "Purchase"
@@ -89,7 +80,6 @@ const vessels = [
   {
     name: "Horizon Tanker 2024",
     subtitle: "Next-gen fuel efficient crude carrier.",
-    price: "$2.5M",
     specs: { miles: "0 Miles", fuel: "Diesel", transmission: "Auto" },
     image: "/oil-tanker-ship.jpg",
     badge: "Limited Edition",
@@ -98,7 +88,6 @@ const vessels = [
   {
     name: "Pacific Link V2",
     subtitle: "Scalable container ship for logistics.",
-    price: "$1.8M",
     specs: { miles: "0 Miles", fuel: "Diesel", transmission: "Manual" },
     image: "/large-cargo-ship.png",
     category: "Purchase"
@@ -106,7 +95,6 @@ const vessels = [
   {
     name: "Global Express III",
     subtitle: "Fastest general cargo vessel in class.",
-    price: "$3.1M",
     specs: { miles: "5 Miles", fuel: "Petrol", transmission: "Manual" },
     image: "/general-cargo-vessel.jpg",
     category: "Purchase"
@@ -189,8 +177,7 @@ export default function SearchedVessels() {
                   </div>
 
                   {/* Footer */}
-                  <div className="mt-auto flex items-center justify-between border-t border-slate-800 pt-6">
-                    <span className="text-white text-[18px] font-bold">{vessel.price}</span>
+                  <div className="mt-auto flex items-center justify-end border-t border-slate-800 pt-6">
                     <button className="flex items-center gap-2 text-white text-[13px] font-medium group/link">
                       View Details
                       <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />

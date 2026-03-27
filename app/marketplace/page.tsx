@@ -6,7 +6,6 @@ import SearchedVessels from "@/components/searched-vessels"
 import WhyChooseUs from "@/components/why-choose-us"
 import EquipmentMarketplace from "@/components/equipment-marketplace"
 import RentOrBuySteps from "@/components/rent-or-buy-steps"
-import FAQ from "@/components/faq"
 import Testimonials from "@/components/testimonials"
 import CTASection from "@/components/cta-section"
 import Footer from "@/components/footer"
@@ -22,7 +21,6 @@ export default function MarketplacePage() {
       <WhyChooseUs />
       <EquipmentMarketplace />
       <RentOrBuySteps />
-      <FAQ />
       <Testimonials />
       <CTASection />
       <Footer />

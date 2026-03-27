@@ -40,6 +40,7 @@ function ConfirmationContent() {
   const crewRequested  = searchParams.get("crewRequested") === "true"
   const requirements   = searchParams.get("requirements") ?? ""
   const durationDays   = searchParams.get("durationDays") ?? "0"
+  const totalPrice     = Number(searchParams.get("totalPrice") ?? "0")
 
   const editHref = equipmentId
     ? `/marketplace/lease?equipmentId=${equipmentId}`
@@ -181,6 +182,7 @@ function ConfirmationContent() {
                     {durationDays} {Number(durationDays) === 1 ? "Day" : "Days"}
                   </span>
                 </div>
+
                 <div className="flex items-center justify-between py-3 border-b border-slate-100">
                   <span className="text-slate-500 text-[14px]">Crew/Operator Requested</span>
                   <span className={`font-bold text-[14px] ${crewRequested ? "text-green-600" : "text-slate-400"}`}>

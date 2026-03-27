@@ -7,7 +7,7 @@ const steps = [
   {
     icon: Anchor,
     title: "SEARCH & COMPARE",
-    description: "Enter your requirements, dates, and location. Filter by price, specifications, and ratings. Save favorites and compare side-by-side.",
+    description: "Enter your requirements, dates, and location. Filter by specifications, and ratings. Save favorites and compare side-by-side.",
   },
   {
     icon: Check,
@@ -17,7 +17,7 @@ const steps = [
   {
     icon: Clipboard,
     title: "BOOK & SECURE",
-    description: "Secure booking with our escrow payment system. Sign digital contracts. Get comprehensive insurance automatically added to your rental.",
+    description: "Secure booking with our verified process. Sign digital contracts. Get comprehensive insurance automatically added to your rental.",
   },
   {
     icon: Settings,

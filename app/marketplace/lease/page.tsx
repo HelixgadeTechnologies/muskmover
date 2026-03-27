@@ -80,10 +80,14 @@ function LeasePageContent() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Calculate duration in days (done before API call so it's always available)
+    // Calculate duration in days
     const start = new Date(formData.startDate)
     const end = new Date(formData.endDate)
     const durationDays = Math.max(0, Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)))
+
+    // Calculate total price: prefer dailyRate, fall back to monthlyRate/30
+    const dailyRate = equipment?.dailyRate ?? (equipment?.monthlyRate ? equipment.monthlyRate / 30 : 0)
+    const totalPrice = Math.round(durationDays * dailyRate)
 
     // Best-effort API submission — errors are logged but don't block navigation
     try {
@@ -96,7 +100,7 @@ function LeasePageContent() {
         vesselId: 0,
         startDate: formData.startDate,
         endDate: formData.endDate,
-        totalPrice: 0,
+        totalPrice,
         status: "PENDING",
         paymentStatus: "UNPAID",
         company: formData.company,
@@ -141,6 +145,7 @@ function LeasePageContent() {
       crewRequested: String(formData.crewRequested),
       requirements: formData.requirements,
       durationDays: String(durationDays),
+      totalPrice: String(totalPrice),
     })
 
     setIsSubmitting(false)
@@ -460,26 +465,7 @@ function LeasePageContent() {
           {/* Right Column - Summary Sidebar */}
           <div className="w-full lg:w-[360px] shrink-0 space-y-6">
 
-            {/* Equipment Rates Card (shown when equipment is loaded) */}
-            {equipment && (equipment.dailyRate || equipment.monthlyRate) && (
-              <div className="bg-white border border-slate-100 rounded-none p-6">
-                <h4 className="text-[13px] font-black text-slate-900 tracking-widest uppercase mb-5">Lease Rates</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  {equipment.dailyRate && (
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
-                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Daily Rate</p>
-                      <p className="text-[22px] font-black text-slate-900">${equipment.dailyRate.toLocaleString()}</p>
-                    </div>
-                  )}
-                  {equipment.monthlyRate && (
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
-                      <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Monthly Rate</p>
-                      <p className="text-[22px] font-black text-slate-900">${equipment.monthlyRate.toLocaleString()}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
+
 
             {/* Why Lease With Us */}
             <div className="bg-white border border-slate-100 rounded-none p-6">

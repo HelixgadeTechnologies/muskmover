@@ -40,13 +40,11 @@ export default function MarketplaceHeader() {
         </nav>
         
         <div className="flex items-center gap-4">
-          <button className="flex items-center gap-2 text-slate-600 hover:text-slate-900">
-            <User className="w-5 h-5" />
-            <span className="text-[15px] font-semibold hidden sm:inline">Sign in</span>
-          </button>
-          <Button className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-6 h-11 text-[14px] font-bold rounded-lg shadow-lg shadow-blue-500/20">
-            List Equipment
-          </Button>
+          <Link href="/contact">
+            <Button className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-6 h-11 text-[14px] font-bold rounded-lg shadow-lg shadow-blue-500/20">
+              Contact Us
+            </Button>
+          </Link>
         </div>
       </div>
     </header>

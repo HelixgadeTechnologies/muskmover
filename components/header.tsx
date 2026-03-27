@@ -15,7 +15,6 @@ export default function Header() {
     { href: "/services", label: "Services" },
     { href: "/marketplace", label: "Marketplace" },
     { href: "/about", label: "About" },
-    { href: "/contact", label: "Contact" },
   ]
 
   return (
@@ -37,26 +36,17 @@ export default function Header() {
               className="text-[15px] font-medium text-slate-700 hover:text-orange-600 transition-colors flex items-center gap-1"
             >
               {link.label}
-              {link.hasDropdown && <ChevronDown className="w-4 h-4" />}
             </Link>
           ))}
         </nav>
 
         {/* Right: Actions */}
         <div className="flex items-center gap-8">
-          <Link
-            href="/sign-in"
-            className="hidden sm:flex items-center gap-2 text-[15px] font-medium text-slate-700 hover:text-orange-600 transition-colors group"
-          >
-            <User className="w-[18px] h-[18px] text-slate-500 group-hover:text-orange-600 transition-colors" />
-            <span>Sign in</span>
-          </Link>
-          <Link href="/submit-listing">
+          <Link href="/contact">
             <Button
-              variant="outline"
-              className="hidden sm:inline-flex border-slate-300 text-slate-700 px-6 h-11 text-[15px] font-medium rounded-none hover:bg-slate-50 hover:text-slate-900 transition-all"
+              className="hidden sm:inline-flex bg-[#050B20] text-white px-8 h-11 text-[15px] font-bold rounded-none hover:bg-black transition-all"
             >
-              Partner With Us
+              Contact Us
             </Button>
           </Link>
           <Button
@@ -104,22 +94,13 @@ export default function Header() {
                   className="text-2xl font-bold text-slate-900 flex items-center justify-between"
                 >
                   {link.label}
-                  {link.hasDropdown && <ChevronDown className="w-5 h-5 text-slate-400" />}
                 </Link>
               ))}
 
               <div className="pt-6 border-t border-gray-100 flex flex-col gap-6">
-                <Link
-                  href="/sign-in"
-                  onClick={() => setIsMenuOpen(false)}
-                  className="flex items-center gap-3 text-xl font-semibold text-slate-900"
-                >
-                  <User className="w-6 h-6 text-slate-500" />
-                  Sign in
-                </Link>
-                <Link href="/submit-listing" onClick={() => setIsMenuOpen(false)}>
+                <Link href="/contact" onClick={() => setIsMenuOpen(false)}>
                   <Button className="w-full bg-[#050B20] text-white h-14 text-lg font-bold rounded-none">
-                    Submit Listing
+                    Contact Us
                   </Button>
                 </Link>
               </div>
