@@ -106,11 +106,13 @@ export default function EquipmentGrid({ selectedCategory }: EquipmentGridProps) 
     const itemCat = (item.category || "").toLowerCase().trim()
     const selectedCat = selectedCategory.toLowerCase().trim()
 
-    // Map UI labels to backend slugs
+    // Map UI labels to backend slugs (handle hyphenated names)
     if (selectedCat === "cargo equipment") return itemCat === "cargo-equipment"
+    if (selectedCat === "diving gear") return itemCat === "diving-gear"
     if (selectedCat === "others") return itemCat === "other"
     
-    return itemCat === selectedCat
+    // Fallback for direct matches or other potential slug formats
+    return itemCat === selectedCat || itemCat === selectedCat.replace(/\s+/g, '-')
   })
 
   return (
@@ -136,7 +138,7 @@ export default function EquipmentGrid({ selectedCategory }: EquipmentGridProps) 
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900"></div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+        <div className={filteredList.length > 0 ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" : "w-full"}>
           {filteredList.length > 0 ? filteredList.map((item, idx) => {
             // Determine image
             let imageUrl = "/marine-diesel-engine.jpg"
@@ -175,9 +177,23 @@ export default function EquipmentGrid({ selectedCategory }: EquipmentGridProps) 
               />
             )
           }) : (
-            mockItems.map((item, idx) => (
-              <EquipmentCard key={idx} {...item} specs={item.specs as any} />
-            ))
+            <div className="flex flex-col items-center justify-center py-24 text-center bg-white border border-slate-100 rounded-3xl shadow-sm px-6">
+              <div className="w-24 h-24 rounded-full bg-slate-50 flex items-center justify-center mb-8 relative">
+                <div className="absolute inset-0 rounded-full bg-orange-100 animate-ping opacity-20" />
+                <Package className="w-10 h-10 text-slate-300 relative z-10" />
+              </div>
+              <h3 className="text-[22px] font-bold text-slate-900 mb-3">No Items Found</h3>
+              <p className="text-slate-500 max-w-md mx-auto mb-10 leading-relaxed font-medium">
+                We couldn&apos;t find any items in <span className="text-orange-600 font-bold decoration-orange-200 decoration-2 underline-offset-4 underline">{selectedCategory}</span>. 
+                Our inventory is updated daily, so check back soon or try selecting a different category.
+              </p>
+              <button 
+                onClick={() => window.location.reload()}
+                className="inline-flex items-center gap-2 px-8 h-14 bg-slate-900 text-white font-bold text-sm tracking-widest uppercase rounded-xl hover:bg-slate-800 transition-all shadow-lg shadow-slate-200"
+              >
+                Clear Filters
+              </button>
+            </div>
           )}
         </div>
       )}
