@@ -71,6 +71,7 @@ export default function ProductDetailsPage() {
   const [activeImage, setActiveImage] = useState(0)
   const [activeTab, setActiveTab] = useState(0)
   const [equipment, setEquipment] = useState<any>(null)
+  const [similarEquipment, setSimilarEquipment] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -80,6 +81,14 @@ export default function ProductDetailsPage() {
         const res = await fetch(`https://musk-backend.onrender.com/api/equipment/${id}`)
         const json = await res.json()
         setEquipment(json.data || json)
+
+        // Fetch all equipment for "Similar Equipment"
+        const listRes = await fetch('https://musk-backend.onrender.com/api/equipment')
+        const listJson = await listRes.json()
+        const allData = Array.isArray(listJson.data) ? listJson.data : Array.isArray(listJson) ? listJson : []
+        
+        const filtered = allData.filter((item: any) => item.id.toString() !== id.toString())
+        setSimilarEquipment(filtered.slice(0, 4))
       } catch (error) {
         console.error("Failed to fetch equipment details", error)
       } finally {
@@ -216,7 +225,7 @@ export default function ProductDetailsPage() {
               <Button className="w-full h-14 bg-orange-600 hover:bg-orange-700 text-white font-bold text-[15px] rounded-xl shadow-lg shadow-orange-500/20">
                 📋 Request Quote for Purchase
               </Button>
-              <Link href="/marketplace/lease">
+              <Link href={`/marketplace/lease?equipmentId=${equipment.id}`}>
                 <Button variant="outline" className="w-full h-14 border-slate-300 text-slate-900 hover:bg-slate-100 font-bold text-[15px] rounded-xl bg-transparent">
                   📞 Enquire for Leasing
                 </Button>
@@ -358,7 +367,57 @@ export default function ProductDetailsPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {similarItems.map((item, i) => (
+            {similarEquipment.length > 0 ? similarEquipment.map((item, i) => {
+              // Determine image securely
+              let imageUrl = "/marine-diesel-engine.jpg"
+              if (item.images) {
+                if (Array.isArray(item.images) && item.images.length > 0 && typeof item.images[0] === 'string') {
+                  imageUrl = item.images[0]
+                } else if (typeof item.images === 'string' && item.images.trim() !== '') {
+                  try {
+                    const parsed = JSON.parse(item.images)
+                    if (Array.isArray(parsed) && parsed.length > 0) imageUrl = parsed[0]
+                    else if (typeof parsed === 'string') imageUrl = parsed
+                  } catch {
+                    const splitImgs = item.images.split(',').map((u: string) => u.trim()).filter(Boolean)
+                    if (splitImgs.length > 0) imageUrl = splitImgs[0]
+                  }
+                }
+              }
+
+              const tag = item.condition && item.condition.toLowerCase() === 'new' ? 'NEW' : null
+              const tagColor = 'bg-green-500'
+
+              return (
+                <div key={item.id || i} className="bg-white border border-slate-200 rounded-2xl overflow-hidden group hover:border-orange-500/30 hover:shadow-lg transition-all">
+                  <div className="relative aspect-square overflow-hidden">
+                    <Image
+                      src={imageUrl}
+                      alt={item.name || "Equipment"}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    {tag && (
+                      <span className={`absolute top-3 left-3 ${tagColor} text-white text-[10px] font-bold px-3 py-1 rounded-lg uppercase`}>
+                        {tag}
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-5 space-y-3">
+                    <h4 className="text-slate-900 font-bold text-[14px] leading-snug line-clamp-2">{item.name || "Equipment"}</h4>
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-500 text-[11px] font-semibold">SKU: MM-EQ-{item.id}</span>
+                      <Link 
+                        href={`/marketplace/category/${item.id}`}
+                        className="text-orange-500 text-[12px] font-bold hover:text-orange-400 transition-colors"
+                      >
+                        View Details
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )
+            }) : similarItems.map((item, i) => (
               <div key={i} className="bg-white border border-slate-200 rounded-2xl overflow-hidden group hover:border-orange-500/30 hover:shadow-lg transition-all">
                 <div className="relative aspect-square overflow-hidden">
                   <Image
