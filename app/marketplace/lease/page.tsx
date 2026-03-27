@@ -80,6 +80,12 @@ function LeasePageContent() {
     e.preventDefault()
     setIsSubmitting(true)
 
+    // Calculate duration in days (done before API call so it's always available)
+    const start = new Date(formData.startDate)
+    const end = new Date(formData.endDate)
+    const durationDays = Math.max(0, Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)))
+
+    // Best-effort API submission — errors are logged but don't block navigation
     try {
       const payload = {
         id: 0,
@@ -98,7 +104,7 @@ function LeasePageContent() {
         phone: formData.phone,
         industrySector: formData.industrySector,
         projectLocation: formData.projectLocation,
-        totalDuration: "TBD",
+        totalDuration: `${durationDays} Days`,
         crewRequested: formData.crewRequested
       }
 
@@ -108,39 +114,37 @@ function LeasePageContent() {
         body: JSON.stringify(payload)
       })
 
-      if (!res.ok) throw new Error('Failed to submit order')
-
-      // Calculate duration in days
-      const start = new Date(formData.startDate)
-      const end = new Date(formData.endDate)
-      const durationDays = Math.max(0, Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)))
-
-      // Build confirmation URL with all form data + equipment context
-      const params = new URLSearchParams({
-        equipmentId: equipmentId ?? "",
-        equipmentName: equipment?.name ?? "",
-        equipmentSku: equipmentSku,
-        equipmentImage: equipmentImage,
-        equipmentStatus: equipment?.status ?? "",
-        company: formData.company,
-        industrySector: formData.industrySector,
-        contactPerson: formData.contactPerson,
-        phone: formData.phone,
-        renterEmail: formData.renterEmail,
-        projectLocation: formData.projectLocation,
-        startDate: formData.startDate,
-        endDate: formData.endDate,
-        crewRequested: String(formData.crewRequested),
-        requirements: formData.requirements,
-        durationDays: String(durationDays),
-      })
-      router.push(`/marketplace/lease/confirmation?${params.toString()}`)
-    } catch (error) {
-      console.error(error)
-      alert("Failed to submit enquiry. Please try again.")
-    } finally {
-      setIsSubmitting(false)
+      if (!res.ok) {
+        const errBody = await res.text().catch(() => "")
+        console.warn(`Order API responded ${res.status}:`, errBody)
+      }
+    } catch (err) {
+      // Network error — log and continue to confirmation
+      console.warn("Order API unreachable:", err)
     }
+
+    // Always navigate to confirmation with the submitted data
+    const params = new URLSearchParams({
+      equipmentId: equipmentId ?? "",
+      equipmentName: equipment?.name ?? "",
+      equipmentSku: equipmentSku,
+      equipmentImage: equipmentImage,
+      equipmentStatus: equipment?.status ?? "",
+      company: formData.company,
+      industrySector: formData.industrySector,
+      contactPerson: formData.contactPerson,
+      phone: formData.phone,
+      renterEmail: formData.renterEmail,
+      projectLocation: formData.projectLocation,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+      crewRequested: String(formData.crewRequested),
+      requirements: formData.requirements,
+      durationDays: String(durationDays),
+    })
+
+    setIsSubmitting(false)
+    router.push(`/marketplace/lease/confirmation?${params.toString()}`)
   }
 
   const equipmentName = equipment?.name ?? "Lease Enquiry"
