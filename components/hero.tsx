@@ -1,11 +1,31 @@
 "use client"
 
 import Image from "next/image"
-import { Search, ChevronDown } from "lucide-react"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import ScrollReveal from "./scroll-reveal"
 
 export default function Hero() {
+  const [searchTerm, setSearchTerm] = useState("")
+  const router = useRouter()
+
+  const handleSearch = (e?: React.FormEvent) => {
+    e?.preventDefault()
+    if (searchTerm.trim()) {
+      router.push(`/marketplace/category?search=${encodeURIComponent(searchTerm.trim())}`)
+    } else {
+      router.push(`/marketplace/category`)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch()
+    }
+  }
+
   return (
     <section className="relative h-[600px] flex flex-col items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -17,7 +37,7 @@ export default function Hero() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-slate-900/10" />
+        <div className="absolute inset-0 bg-slate-900/15" />
       </div>
 
       {/* Content */}
@@ -36,39 +56,29 @@ export default function Hero() {
 
         {/* Pill-Shaped Search Bar */}
         <ScrollReveal direction="up" delay={0.4} duration={0.8}>
-          <div className="max-w-4xl mx-auto bg-white rounded-full shadow-xl p-1.5 sm:p-2 pl-4 sm:pl-8 flex items-center w-full">
-            <div className="flex-1 flex items-center justify-between group cursor-pointer pr-2 sm:pr-6">
-              <div className="flex flex-col items-start overflow-hidden">
-                <span className="text-[10px] sm:text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-0.5 truncate w-full">Vessel</span>
-                {/* <span className="text-[15px] font-medium text-slate-700">Any Type</span> */}
-              </div>
-              <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-slate-400 shrink-0 ml-1" />
+          <form 
+            onSubmit={handleSearch}
+            className="max-w-3xl mx-auto bg-white rounded-full shadow-2xl p-2 pl-8 flex items-center w-full group focus-within:ring-2 focus-within:ring-red-500/20 transition-all border border-transparent focus-within:border-red-500/30"
+          >
+            <div className="flex-1 flex flex-col items-start overflow-hidden">
+              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Search Equipment or Vessels</span>
+              <input
+                type="text"
+                placeholder="Ex. SS Marina, Hydraulic Pump, PSV..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="w-full bg-transparent border-none outline-none text-[16px] font-bold text-slate-800 placeholder:text-slate-300 placeholder:font-medium pb-1"
+              />
             </div>
 
-            <div className="w-px h-8 sm:h-10 bg-slate-200" />
-
-            <div className="flex-1 flex items-center justify-between group cursor-pointer px-2 sm:px-6">
-              <div className="flex flex-col items-start overflow-hidden">
-                <span className="text-[10px] sm:text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-0.5 truncate w-full">Makes</span>
-                {/* <span className="text-[15px] font-medium text-slate-700">All Makes</span> */}
-              </div>
-              <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-slate-400 shrink-0 ml-1" />
-            </div>
-
-            <div className="w-px h-8 sm:h-10 bg-slate-200" />
-
-            <div className="flex-1 flex items-center justify-between group cursor-pointer px-2 sm:px-6">
-              <div className="flex flex-col items-start overflow-hidden">
-                <span className="text-[10px] sm:text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-0.5 truncate w-full">Models</span>
-                {/* <span className="text-[15px] font-medium text-slate-700">All Models</span> */}
-              </div>
-              <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-slate-400 shrink-0 ml-1" />
-            </div>
-
-            <Button className="bg-[#FF3B30] hover:bg-[#E03429] rounded-full w-[44px] h-[44px] sm:w-[60px] sm:h-[60px] flex items-center justify-center p-0 ml-1 sm:ml-2 transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-red-500/20 shrink-0">
-              <Search className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            <Button 
+              type="submit"
+              className="bg-[#FF3B30] hover:bg-[#E03429] rounded-full w-[54px] h-[54px] sm:w-[64px] sm:h-[64px] flex items-center justify-center p-0 ml-2 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-red-500/30 shrink-0"
+            >
+              <Search className="w-5 h-5 sm:w-7 sm:h-7 text-white" />
             </Button>
-          </div>
+          </form>
         </ScrollReveal>
       </div>
     </section>

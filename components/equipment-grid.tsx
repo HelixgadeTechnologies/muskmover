@@ -77,9 +77,10 @@ const mockItems = [
 
 interface EquipmentGridProps {
   selectedCategory: string
+  searchQuery?: string
 }
 
-export default function EquipmentGrid({ selectedCategory }: EquipmentGridProps) {
+export default function EquipmentGrid({ selectedCategory, searchQuery = "" }: EquipmentGridProps) {
   const [equipmentList, setEquipmentList] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
@@ -101,25 +102,37 @@ export default function EquipmentGrid({ selectedCategory }: EquipmentGridProps) 
     fetchEquipment()
   }, [])
 
-  // Reset page when category changes
+  // Reset page when category or search changes
   useEffect(() => {
     setCurrentPage(1)
-  }, [selectedCategory])
+  }, [selectedCategory, searchQuery])
 
   // Filtering logic
   const filteredList = equipmentList.filter(item => {
-    if (selectedCategory === "All" || selectedCategory === "All Equipment") return true
-    
-    const itemCat = (item.category || "").toLowerCase().trim()
-    const selectedCat = selectedCategory.toLowerCase().trim()
+    // 1. Category Filter
+    let matchesCategory = true
+    if (selectedCategory !== "All" && selectedCategory !== "All Equipment") {
+      const itemCat = (item.category || "").toLowerCase().trim()
+      const selectedCat = selectedCategory.toLowerCase().trim()
 
-    // Map UI labels to backend slugs (handle hyphenated names)
-    if (selectedCat === "cargo equipment") return itemCat === "cargo-equipment"
-    if (selectedCat === "diving gear") return itemCat === "diving-gear"
-    if (selectedCat === "others") return itemCat === "other"
-    
-    // Fallback for direct matches or other potential slug formats
-    return itemCat === selectedCat || itemCat === selectedCat.replace(/\s+/g, '-')
+      if (selectedCat === "cargo equipment") matchesCategory = itemCat === "cargo-equipment"
+      else if (selectedCat === "diving gear") matchesCategory = itemCat === "diving-gear"
+      else if (selectedCat === "others") matchesCategory = itemCat === "other"
+      else matchesCategory = itemCat === selectedCat || itemCat === selectedCat.replace(/\s+/g, '-')
+    }
+
+    // 2. Search Query Filter
+    let matchesSearch = true
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim()
+      const name = (item.name || "").toLowerCase()
+      const details = (item.details || "").toLowerCase()
+      const category = (item.category || "").toLowerCase()
+      
+      matchesSearch = name.includes(query) || details.includes(query) || category.includes(query)
+    }
+
+    return matchesCategory && matchesSearch
   })
 
   // Pagination logic
