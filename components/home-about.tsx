@@ -38,7 +38,7 @@ export default function HomeAbout() {
                 Your Trusted Maritime Partner
               </h2>
               <p className="text-slate-600 text-lg leading-relaxed mb-10">
-                Musk Mover Nigeria Limited is a premier maritime logistics and offshore service provider. We specialize in complex offshore operations, providing end-to-end solutions that bridge the gap between technical requirements and operational reality.
+                Muskmover Nigeria Limited is a premier maritime logistics and offshore service provider. We specialize in complex offshore operations, providing end-to-end solutions that bridge the gap between technical requirements and operational reality.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

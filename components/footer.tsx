@@ -32,11 +32,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
           {/* Column 1: Branding */}
           <div>
-            <h4 className="text-[18px] font-bold text-slate-900 mb-8">Musk Mover</h4>
+            <h4 className="text-[18px] font-bold text-slate-900 mb-8">Muskmover Ltd</h4>
             <div className="mb-8">
               <Image
                 src="/logo.png"
-                alt="Musk Mover Logo"
+                alt="Muskmover Ltd Logo"
                 width={144}
                 height={120}
                 className="w-[115px] h-24"
@@ -45,7 +45,6 @@ export default function Footer() {
             <h5 className="text-[17px] font-bold text-slate-900 mb-6">Connect With Us</h5>
             <div className="flex gap-6">
               <Link href="https://www.tiktok.com/@muskmover.ltd" className="text-slate-900 hover:text-red-600 transition-colors" target="_blank" rel="noopener noreferrer">
-                {/* TikTok Icon replacement for Facebook */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -61,7 +60,7 @@ export default function Footer() {
                   <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
                 </svg>
               </Link>
-              <Link href="https://x.com/MuskMover" className="text-slate-900 hover:text-red-600 transition-colors" target="_blank" rel="noopener noreferrer">
+              <Link href="https://x.com/Muskmover" className="text-slate-900 hover:text-red-600 transition-colors" target="_blank" rel="noopener noreferrer">
                 <Twitter className="w-5 h-5 fill-current" />
               </Link>
               <Link href="https://www.instagram.com/muskmover/" className="text-slate-900 hover:text-red-600 transition-colors" target="_blank" rel="noopener noreferrer">
@@ -113,7 +112,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-10 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6 relative">
           <p className="text-[14px] text-slate-500 font-medium">
-            © 2026 muskmover.ng. All rights reserved.
+            © 2026 Muskmover Ltd. All rights reserved.
           </p>
           <div className="flex items-center gap-6 text-[14px] text-slate-500 font-medium">
             <Link href="/terms" className="hover:text-slate-900">Terms & Conditions</Link>

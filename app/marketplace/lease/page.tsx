@@ -432,7 +432,7 @@ function LeasePageContent() {
                     />
                   </button>
                   <span className="text-[14px] font-semibold text-slate-700">
-                    Request Musk Mover Certified Crew/Operator for this equipment
+                    Request Muskmover Certified Crew/Operator for this equipment
                   </span>
                 </div>
               </div>
@@ -457,7 +457,7 @@ function LeasePageContent() {
 
             {/* Disclaimer */}
             <p className="text-center text-slate-400 text-[13px] leading-relaxed">
-              By submitting, you agree to Musk Mover&apos;s corporate leasing terms and conditions.<br />
+              By submitting, you agree to Muskmover&apos;s corporate leasing terms and conditions.<br />
               Our team typically responds within <strong className="text-slate-700">4 business hours</strong>.
             </p>
           </form>

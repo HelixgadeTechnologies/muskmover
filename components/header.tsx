@@ -23,7 +23,7 @@ export default function Header() {
         {/* Left: Logo */}
         <div className="flex-shrink-0">
           <Link href="/" className="flex items-center">
-            <Image src="/logo.png" alt="MuskMover Logo" width={67} height={56} className="w-[67px] h-14" priority />
+            <Image src="/logo.png" alt="Muskmover Ltd Logo" width={67} height={56} className="w-[67px] h-14" priority />
           </Link>
         </div>
 
@@ -73,7 +73,7 @@ export default function Header() {
             {/* Mobile Menu Top Bar */}
             <div className="h-20 px-4 flex items-center justify-between border-b border-gray-100">
               <Link href="/" onClick={() => setIsMenuOpen(false)}>
-                <Image src="/logo.png" alt="MuskMover Logo" width={48} height={48} className="w-12 h-12" />
+                <Image src="/logo.png" alt="Muskmover Ltd Logo" width={48} height={48} className="w-12 h-12" />
               </Link>
               <Button
                 variant="ghost"
@@ -108,8 +108,8 @@ export default function Header() {
 
             {/* Bottom Footer Area (Optional) */}
             <div className="p-8 bg-slate-50 border-t border-gray-100">
-              <p className="text-sm text-slate-500 text-center">
-                © 2024 MuskMover Marketplace. All rights reserved.
+              <p className="text-sm text-slate-500 text-center font-medium">
+                © 2026 Muskmover Ltd. All rights reserved.
               </p>
             </div>
           </motion.div>

@@ -15,7 +15,7 @@ export default function TermsHero() {
                         Terms & Conditions
                     </h1>
                     <p className="text-slate-400 text-sm md:text-base">
-                        Musk Mover Ltd
+                        Muskmover Ltd
                     </p>
                     <p className="text-slate-500 text-xs mt-2 uppercase tracking-widest">
                         Last Updated: February 14th, 2024

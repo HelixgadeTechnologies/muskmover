@@ -16,9 +16,9 @@ const faqs = [
       "All rentals are covered by our comprehensive marine insurance. In the event of damage, our support team will guide you through the reporting process. Minor wear and tear is usually covered, while more significant incidents are handled through the insurance provider according to our terms and conditions.",
   },
   {
-    question: "How much does it cost to list my vessel or equipment on Musk Mover?",
+    question: "How much does it cost to list my vessel or equipment on Muskmover?",
     answer:
-      "Listing your vessel or equipment on Musk Mover is completely free. We only charge a small processing fee once a rental or sale is successfully completed through our platform. This ensures our interests are aligned with yours in getting your items booked or sold.",
+      "Listing your vessel or equipment on Muskmover is completely free. We only charge a small processing fee once a rental or sale is successfully completed through our platform. This ensures our interests are aligned with yours in getting your items booked or sold.",
   },
   {
     question: "Can I rent equipment in a different country, and how does customs work?",

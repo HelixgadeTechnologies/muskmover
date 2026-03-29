@@ -17,7 +17,7 @@ export default function HomeCTA() {
               Ready to scale your offshore operations?
             </h2>
             <p className="text-slate-400 text-lg mb-12 max-w-2xl mx-auto">
-              Join dozens of partners who trust Musk Mover for their most critical maritime logistics. Let's build the future together.
+              Join dozens of partners who trust Muskmover for their most critical maritime logistics. Let's build the future together.
             </p>
           </ScrollReveal>
 

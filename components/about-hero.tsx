@@ -27,8 +27,8 @@ export default function AboutHero() {
                     </h1>
                 </ScrollReveal>
                 <ScrollReveal direction="up" delay={0.2} duration={0.8}>
-                    <p className="text-lg md:text-xl text-white/90 max-w-2xl leading-relaxed font-medium">
-                        Musk Mover is on a mission to simplify the maritime industry. We provide a
+                    <p className="text-lg md:text-xl text-white/90 max-w-2xl leading-relaxed font-normal">
+                        Muskmover is on a mission to simplify the maritime industry. We provide a
                         platform that connects owners and renters, ensuring transparency, reliability,
                         and efficiency every step of the way.
                     </p>

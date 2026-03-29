@@ -9,14 +9,14 @@ const testimonials = [
     name: "Sarah Chen",
     role: "Owner, Pacific Charter Co",
     title: "Great Work",
-    quote: "As a fishing charter business, finding quality vessels during peak season was a nightmare. Musk Mover gave us instant access to 15 verified boats within our budget. Our revenue increased 35% last quarter",
+    quote: "As a fishing charter business, finding quality vessels during peak season was a nightmare. Muskmover gave us instant access to 15 verified boats within our budget. Our revenue increased 35% last quarter",
     image: "/professional-woman-portrait.png",
   },
   {
     name: "James O'Connell",
     role: "Project Manager, Coastal Engineering Ltd.",
     title: "Awesome Design",
-    quote: "We needed specialized dredging equipment for a 3-month project. Instead of purchasing €500,000 machinery, we rented through Musk Mover for €45,000. The platform handled all logistics and insurance.",
+    quote: "We needed specialized dredging equipment for a 3-month project. Instead of purchasing €500,000 machinery, we rented through Muskmover for €45,000. The platform handled all logistics and insurance.",
     image: "/professional-man-portrait.png",
   },
   {

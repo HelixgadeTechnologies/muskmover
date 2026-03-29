@@ -226,7 +226,7 @@ export default function ProductDetailsPage() {
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2 text-sm text-slate-600">
                   <ShieldCheck className="w-4 h-4 text-orange-500" />
-                  <span>Musk Mover Certified</span>
+                  <span>Muskmover Certified</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />

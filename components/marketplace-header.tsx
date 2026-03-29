@@ -14,7 +14,7 @@ export default function MarketplaceHeader() {
           <Image src="/icon.svg" alt="MuskMover" width={24} height={24} className="invert" />
         </div>
         <div className="hidden sm:block">
-          <h1 className="text-lg font-bold text-slate-900 leading-none">MUSK MOVER</h1>
+          <h1 className="text-lg font-bold text-slate-900 leading-none tracking-tight">MUSKMOVER LTD</h1>
           <p className="text-[10px] text-slate-500 font-bold tracking-widest">NIGERIA LIMITED</p>
         </div>
       </Link>

@@ -15,7 +15,7 @@ export default function PrivacyHero() {
                         Privacy Policy
                     </h1>
                     <p className="text-slate-400 text-sm md:text-base">
-                        Musk Mover Ltd
+                        Muskmover Ltd
                     </p>
                     <p className="text-slate-500 text-xs mt-2 uppercase tracking-widest">
                         Effective Date: February 14th, 2024

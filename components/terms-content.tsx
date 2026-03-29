@@ -6,7 +6,7 @@ export default function TermsContent() {
     const sections = [
         {
             title: "1. Company Overview",
-            content: "Musk Mover Ltd. provides a marketplace for marine vessel rentals and sales, boat services, and other marine-related activities based in Lagos and Rivers my marine marketplace and store."
+            content: "Muskmover Ltd. provides a marketplace for marine vessel rentals and sales, boat services, and other marine-related activities based in Lagos and Rivers my marine marketplace and store."
         },
         {
             title: "2. Use of Website",
@@ -26,41 +26,36 @@ export default function TermsContent() {
                 "Operational safety requirements",
                 "Regulatory standards",
                 "Applicable marine laws and regulations",
-                "Musk Mover Ltd reserves the right to modify services and pricing without notice."
+                "Muskmover Ltd reserves the right to modify services and pricing without notice."
             ]
         },
         {
             title: "4. Intellectual Property",
-            content: "All content on the website including text, images, graphics, and logos and software, is the property of Musk Mover Pty Ltd and may not be reproduced, distributed, or used without prior written permission."
+            content: "All content on the website including text, images, graphics, and logos and software, is the property of Muskmover Ltd and may not be reproduced, distributed, or used without prior written permission."
         },
         {
             title: "5. Limitation of Liability",
-            content: "Musk Mover Ltd shall not be liable for:",
+            content: "Muskmover Ltd shall not be liable for:",
             items: [
                 "Indirect, incidental, or consequential damages.",
-                "Losses due to unforeseen circumstances or equipment failure.",
-                "Accuracy of information provided by third-party service providers."
+                "Losses due to unforeseen circumstances or equipment failure."
             ]
         },
         {
-            title: "6. Third-Party Services",
-            content: "We may utilize third-party website links and vendors for certain services. Musk Mover Pty Ltd. is not responsible for the independent actions of third parties or any loss or damage incurred as a result."
-        },
-        {
-            title: "7. Confidentiality",
+            title: "6. Confidentiality",
             content: "Any non-public information exchanged during service engagement shall be treated as confidential by both parties as required by law."
         },
         {
-            title: "8. Governing Law",
+            title: "7. Governing Law",
             content: "These Terms shall be governed by and interpreted in accordance with the laws of the Federal Republic of Nigeria."
         },
         {
-            title: "9. Termination",
+            title: "8. Termination",
             content: "We reserve the right to suspend or terminate access to the website and services for violations of these Terms or applicable laws."
         },
         {
-            title: "10. Amendments",
-            content: "Musk Mover Ltd reserves to update these Terms at any time. Continued use of the website constitutes acceptance of updated terms."
+            title: "9. Amendments",
+            content: "Muskmover Ltd reserves to update these Terms at any time. Continued use of the website constitutes acceptance of updated terms."
         }
     ]
 
@@ -70,7 +65,7 @@ export default function TermsContent() {
                 {/* Introduction */}
                 <div className="mb-16">
                     <p className="text-slate-600 leading-relaxed text-sm md:text-base italic">
-                        These Terms and Conditions govern your use of the Musk Mover Ltd website and services. By accessing our website or engaging our services, you agree to be bound by these terms.
+                        These Terms and Conditions govern your use of the Muskmover Ltd website and services. By accessing our website or engaging our services, you agree to be bound by these terms.
                     </p>
                 </div>
 
@@ -92,10 +87,10 @@ export default function TermsContent() {
                     </div>
                 ))}
 
-                {/* Section 11: Contact Information */}
+                {/* Section 10: Contact Information */}
                 <div className="mb-16 p-8 border border-slate-100 rounded-[12px] bg-slate-50/50">
-                    <h2 className="text-2xl font-bold text-slate-900 mb-6">11. Contact Information</h2>
-                    <p className="font-semibold text-slate-900 mb-6">Musk Mover Pty Ltd</p>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-6">10. Contact Information</h2>
+                    <p className="font-semibold text-slate-900 mb-6">Muskmover Ltd</p>
                     <div className="space-y-4">
                         <div className="flex items-center gap-4 text-slate-600">
                             <MapPin className="w-5 h-5 text-red-500" />
