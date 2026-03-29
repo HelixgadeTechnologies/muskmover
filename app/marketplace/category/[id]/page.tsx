@@ -3,8 +3,9 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { Star, ShieldCheck, ChevronRight, ArrowRight, Check, Truck, Clock, MapPin } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
@@ -31,32 +32,36 @@ const coreFeatures = [
   "Emergency Quick Release System (EQRS)",
 ]
 
-const similarItems = [
+const fallbackSimilarItems = [
   {
-    title: "High-Pressure Hydraulic Power Unit (HPU) 75kW",
+    id: "f1",
+    name: "High-Pressure Hydraulic Power Unit (HPU) 75kW",
     sku: "SKU: MMA-HPU-075",
-    image: "/hydraulic-pump-equipment.jpg",
+    images: ["/hydraulic-pump-equipment.jpg"],
     tag: "IN STOCK",
     tagColor: "bg-green-500",
   },
   {
-    title: "Towing 5 Anchor Handling Winch 350T",
+    id: "f2",
+    name: "Towing 5 Anchor Handling Winch 350T",
     sku: "SKU: MM-AHC-350",
-    image: "/ship-anchor-system.jpg",
+    images: ["/ship-anchor-system.jpg"],
     tag: "2",
     tagColor: "bg-orange-500",
   },
   {
-    title: "SmartDeck Wireless Control Console v3",
+    id: "f3",
+    name: "SmartDeck Wireless Control Console v3",
     sku: "SKU: MMA-CTL-WL3",
-    image: "/large-cargo-ship.png",
+    images: ["/large-cargo-ship.png"],
     tag: "CONTROL",
     tagColor: "bg-orange-500",
   },
   {
-    title: "Steel Wire Rope - 76mm Galvanized (1km)",
+    id: "f4",
+    name: "Steel Wire Rope - 76mm Galvanized (1km)",
     sku: "SKU: MMA-RPE-076",
-    image: "/general-cargo-vessel.jpg",
+    images: ["/general-cargo-vessel.jpg"],
     tag: null,
     tagColor: "",
   },
@@ -72,6 +77,7 @@ export default function ProductDetailsPage() {
   const [activeTab, setActiveTab] = useState(0)
   const [equipment, setEquipment] = useState<any>(null)
   const [similarEquipment, setSimilarEquipment] = useState<any[]>([])
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -88,15 +94,28 @@ export default function ProductDetailsPage() {
         const allData = Array.isArray(listJson.data) ? listJson.data : Array.isArray(listJson) ? listJson : []
         
         const filtered = allData.filter((item: any) => item.id.toString() !== id.toString())
-        setSimilarEquipment(filtered.slice(0, 4))
+        setSimilarEquipment(filtered.length > 0 ? filtered : fallbackSimilarItems)
       } catch (error) {
         console.error("Failed to fetch equipment details", error)
+        setSimilarEquipment(fallbackSimilarItems)
       } finally {
         setLoading(false)
       }
     }
     fetchDetails()
   }, [id])
+
+  // Carousel Logic
+  const visibleCount = 4
+  const maxIndex = Math.max(0, similarEquipment.length - visibleCount)
+
+  const nextSlide = () => {
+    setCurrentIndex(prev => Math.min(prev + 1, maxIndex))
+  }
+
+  const prevSlide = () => {
+    setCurrentIndex(prev => Math.max(prev - 1, 0))
+  }
 
   if (loading) {
     return (
@@ -143,7 +162,7 @@ export default function ProductDetailsPage() {
   const safeActiveImage = parsedImages[activeImage] ? activeImage : 0
 
   return (
-    <main className="min-h-screen bg-white text-slate-900">
+    <main className="min-h-screen bg-white text-slate-900 overflow-x-hidden">
       <Header />
 
       {/* Breadcrumb */}
@@ -153,7 +172,7 @@ export default function ProductDetailsPage() {
           <ChevronRight className="w-4 h-4 text-slate-400" />
           <Link href="/marketplace/category" className="text-slate-500 hover:text-slate-900 transition-colors">Power Systems</Link>
           <ChevronRight className="w-4 h-4 text-slate-400" />
-          <span className="text-orange-500 font-semibold">Drum Systems</span>
+          <span className="text-orange-500 font-semibold">{equipment.name}</span>
         </nav>
       </div>
 
@@ -241,8 +260,6 @@ export default function ProductDetailsPage() {
                 </div>
               </div>
             </div>
-
-
           </div>
         </div>
       </section>
@@ -339,7 +356,7 @@ export default function ProductDetailsPage() {
       </section>
 
       {/* Similar Equipment */}
-      <section className="border-t border-slate-200 py-16 bg-slate-50">
+      <section className="border-t border-slate-200 py-16 bg-slate-50 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="flex items-end justify-between mb-10">
             <div>
@@ -347,95 +364,86 @@ export default function ProductDetailsPage() {
               <p className="text-slate-500 text-[15px]">Complementary assets for your marine operations.</p>
             </div>
             <div className="flex gap-2">
-              <button className="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition-colors">
+              <button 
+                onClick={prevSlide}
+                disabled={currentIndex === 0}
+                className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all ${
+                  currentIndex === 0 ? 'border-slate-200 text-slate-200 cursor-not-allowed' : 'border-slate-300 text-slate-500 hover:bg-white hover:border-orange-500 hover:text-orange-500'
+                }`}
+              >
                 ←
               </button>
-              <button className="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition-colors">
+              <button 
+                onClick={nextSlide}
+                disabled={currentIndex >= maxIndex}
+                className={`w-12 h-12 rounded-full border flex items-center justify-center transition-all ${
+                  currentIndex >= maxIndex ? 'border-slate-200 text-slate-200 cursor-not-allowed' : 'border-slate-300 text-slate-500 hover:bg-white hover:border-orange-500 hover:text-orange-500'
+                }`}
+              >
                 →
               </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {similarEquipment.length > 0 ? similarEquipment.map((item, i) => {
-              // Determine image securely
-              let imageUrl = "/marine-diesel-engine.jpg"
-              if (item.images) {
-                if (Array.isArray(item.images) && item.images.length > 0 && typeof item.images[0] === 'string') {
-                  imageUrl = item.images[0]
-                } else if (typeof item.images === 'string' && item.images.trim() !== '') {
-                  try {
-                    const parsed = JSON.parse(item.images)
-                    if (Array.isArray(parsed) && parsed.length > 0) imageUrl = parsed[0]
-                    else if (typeof parsed === 'string') imageUrl = parsed
-                  } catch {
-                    const splitImgs = item.images.split(',').map((u: string) => u.trim()).filter(Boolean)
-                    if (splitImgs.length > 0) imageUrl = splitImgs[0]
+          <div className="relative">
+            <motion.div 
+              className="flex gap-6"
+              initial={false}
+              animate={{ x: `calc(-${currentIndex * (100 / (visibleCount))}%)` }}
+              transition={{ type: "spring", stiffness: 300, damping: 35 }}
+            >
+              {similarEquipment.map((item, i) => {
+                // Determine image securely
+                let imageUrl = "/marine-diesel-engine.jpg"
+                if (item.images) {
+                  if (Array.isArray(item.images) && item.images.length > 0 && typeof item.images[0] === 'string') {
+                    imageUrl = item.images[0]
+                  } else if (typeof item.images === 'string' && item.images.trim() !== '') {
+                    try {
+                      const parsed = JSON.parse(item.images)
+                      if (Array.isArray(parsed) && parsed.length > 0) imageUrl = parsed[0]
+                      else if (typeof parsed === 'string') imageUrl = parsed
+                    } catch {
+                      const splitImgs = item.images.split(',').map((u: string) => u.trim()).filter(Boolean)
+                      if (splitImgs.length > 0) imageUrl = splitImgs[0]
+                    }
                   }
                 }
-              }
 
-              const tag = item.condition && item.condition.toLowerCase() === 'new' ? 'NEW' : null
-              const tagColor = 'bg-green-500'
+                const tag = item.condition && item.condition.toLowerCase() === 'new' ? 'NEW' : null
+                const tagColor = 'bg-green-500'
 
-              return (
-                <div key={item.id || i} className="bg-white border border-slate-200 rounded-2xl overflow-hidden group hover:border-orange-500/30 hover:shadow-lg transition-all">
-                  <div className="relative aspect-square overflow-hidden">
-                    <Image
-                      src={imageUrl}
-                      alt={item.name || "Equipment"}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    {tag && (
-                      <span className={`absolute top-3 left-3 ${tagColor} text-white text-[10px] font-bold px-3 py-1 rounded-lg uppercase`}>
-                        {tag}
-                      </span>
-                    )}
-                  </div>
-                  <div className="p-5 space-y-3">
-                    <h4 className="text-slate-900 font-bold text-[14px] leading-snug line-clamp-2">{item.name || "Equipment"}</h4>
-                    <div className="flex items-center justify-between">
-                      <span className="text-slate-500 text-[11px] font-semibold">SKU: MM-EQ-{item.id}</span>
-                      <Link 
-                        href={`/marketplace/category/${item.id}`}
-                        className="text-orange-500 text-[12px] font-bold hover:text-orange-400 transition-colors"
-                      >
-                        View Details
-                      </Link>
+                return (
+                  <div key={item.id || i} className="min-w-[calc(25%-18px)] flex-shrink-0 bg-white border border-slate-200 rounded-2xl overflow-hidden group hover:border-orange-500/30 hover:shadow-lg transition-all">
+                    <div className="relative aspect-square overflow-hidden">
+                      <Image
+                        src={imageUrl}
+                        alt={item.name || "Equipment"}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      {tag && (
+                        <span className={`absolute top-3 left-3 ${tagColor} text-white text-[10px] font-bold px-3 py-1 rounded-lg uppercase`}>
+                          {tag}
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-5 space-y-3">
+                      <h4 className="text-slate-900 font-bold text-[14px] leading-snug line-clamp-2">{item.name || "Equipment"}</h4>
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-500 text-[11px] font-semibold">SKU: MM-EQ-{item.id}</span>
+                        <Link 
+                          href={`/marketplace/category/${item.id}`}
+                          className="text-orange-500 text-[12px] font-bold hover:text-orange-400 transition-colors"
+                        >
+                          View Details
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            }) : similarItems.map((item, i) => (
-              <div key={i} className="bg-white border border-slate-200 rounded-2xl overflow-hidden group hover:border-orange-500/30 hover:shadow-lg transition-all">
-                <div className="relative aspect-square overflow-hidden">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  {item.tag && (
-                    <span className={`absolute top-3 left-3 ${item.tagColor} text-white text-[10px] font-bold px-3 py-1 rounded-lg uppercase`}>
-                      {item.tag}
-                    </span>
-                  )}
-                </div>
-                <div className="p-5 space-y-3">
-                  <h4 className="text-slate-900 font-bold text-[14px] leading-snug line-clamp-2">{item.title}</h4>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-500 text-[11px] font-semibold">{item.sku}</span>
-                    <Link 
-                      href="/marketplace/category/1"
-                      className="text-orange-500 text-[12px] font-bold hover:text-orange-400 transition-colors"
-                    >
-                      View Details
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
+                )
+              })}
+            </motion.div>
           </div>
         </div>
       </section>

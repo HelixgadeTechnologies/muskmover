@@ -82,6 +82,8 @@ interface EquipmentGridProps {
 export default function EquipmentGrid({ selectedCategory }: EquipmentGridProps) {
   const [equipmentList, setEquipmentList] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 20
 
   useEffect(() => {
     async function fetchEquipment() {
@@ -99,6 +101,11 @@ export default function EquipmentGrid({ selectedCategory }: EquipmentGridProps) 
     fetchEquipment()
   }, [])
 
+  // Reset page when category changes
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [selectedCategory])
+
   // Filtering logic
   const filteredList = equipmentList.filter(item => {
     if (selectedCategory === "All" || selectedCategory === "All Equipment") return true
@@ -115,13 +122,58 @@ export default function EquipmentGrid({ selectedCategory }: EquipmentGridProps) 
     return itemCat === selectedCat || itemCat === selectedCat.replace(/\s+/g, '-')
   })
 
+  // Pagination logic
+  const totalItems = filteredList.length
+  const totalPages = Math.ceil(totalItems / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentItems = filteredList.slice(startIndex, endIndex)
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
+
+  // Generate page numbers to show
+  const getPageNumbers = () => {
+    const pages = []
+    const maxVisiblePages = 5
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i)
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) pages.push(i)
+        pages.push('...')
+        pages.push(totalPages)
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1)
+        pages.push('...')
+        for (let i = totalPages - 3; i <= totalPages; i++) pages.push(i)
+      } else {
+        pages.push(1)
+        pages.push('...')
+        pages.push(currentPage - 1)
+        pages.push(currentPage)
+        pages.push(currentPage + 1)
+        pages.push('...')
+        pages.push(totalPages)
+      }
+    }
+    return pages
+  }
+
   return (
     <div className="flex-1 space-y-12">
       {/* Header Info */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-slate-100">
         <div>
           <h2 className="text-[28px] md:text-[36px] font-bold text-slate-900 mb-2">Marine Equipment Marketplace</h2>
-          <p className="text-slate-500 font-medium">Showing {loading ? "..." : filteredList.length} items available in Nigeria</p>
+          <p className="text-slate-500 font-medium">
+            Showing {loading ? "..." : `${startIndex + 1}-${Math.min(endIndex, totalItems)} of ${totalItems}`} items available in Nigeria
+          </p>
         </div>
         <div className="flex items-center gap-4">
           <span className="text-slate-400 text-sm font-bold">Sort by:</span>
@@ -138,8 +190,8 @@ export default function EquipmentGrid({ selectedCategory }: EquipmentGridProps) 
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900"></div>
         </div>
       ) : (
-        <div className={filteredList.length > 0 ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" : "w-full"}>
-          {filteredList.length > 0 ? filteredList.map((item, idx) => {
+        <div className={currentItems.length > 0 ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" : "w-full"}>
+          {currentItems.length > 0 ? currentItems.map((item, idx) => {
             // Determine image
             let imageUrl = "/marine-diesel-engine.jpg"
             if (item.images) {
@@ -199,27 +251,47 @@ export default function EquipmentGrid({ selectedCategory }: EquipmentGridProps) 
       )}
 
       {/* Pagination */}
-      <div className="pt-12 flex items-center justify-center gap-3">
-        <button className="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-all">
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <button className="w-12 h-12 rounded-xl bg-orange-600 text-white font-bold flex items-center justify-center shadow-lg shadow-orange-500/20">
-          1
-        </button>
-        <button className="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center text-slate-600 font-bold hover:bg-slate-50 transition-all">
-          2
-        </button>
-        <button className="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center text-slate-600 font-bold hover:bg-slate-50 transition-all">
-          3
-        </button>
-        <span className="px-2 text-slate-400 font-bold">...</span>
-        <button className="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center text-slate-600 font-bold hover:bg-slate-50 transition-all">
-          12
-        </button>
-        <button className="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-all">
-          <ChevronRight className="w-5 h-5" />
-        </button>
-      </div>
+      {totalPages > 1 && (
+        <div className="pt-12 flex items-center justify-center gap-3">
+          <button 
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center transition-all ${
+              currentPage === 1 ? 'text-slate-200 cursor-not-allowed' : 'text-slate-400 hover:bg-slate-50 hover:text-slate-600'
+            }`}
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          
+          {getPageNumbers().map((page, idx) => (
+            page === '...' ? (
+              <span key={`dots-${idx}`} className="px-2 text-slate-400 font-bold">...</span>
+            ) : (
+              <button 
+                key={`page-${page}`}
+                onClick={() => handlePageChange(page as number)}
+                className={`w-12 h-12 rounded-xl font-bold flex items-center justify-center transition-all ${
+                  currentPage === page 
+                    ? 'bg-orange-600 text-white shadow-lg shadow-orange-500/20' 
+                    : 'border border-slate-200 text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                {page}
+              </button>
+            )
+          ))}
+
+          <button 
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center transition-all ${
+              currentPage === totalPages ? 'text-slate-200 cursor-not-allowed' : 'text-slate-400 hover:bg-slate-50 hover:text-slate-600'
+            }`}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+      )}
     </div>
   )
 }
