@@ -203,7 +203,7 @@ export default function EquipmentGrid({ selectedCategory, searchQuery = "" }: Eq
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900"></div>
         </div>
       ) : (
-        <div className={currentItems.length > 0 ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" : "w-full"}>
+        <div className={currentItems.length > 0 ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12" : "w-full"}>
           {currentItems.length > 0 ? currentItems.map((item, idx) => {
             // Determine image
             let imageUrl = "/marine-diesel-engine.jpg"

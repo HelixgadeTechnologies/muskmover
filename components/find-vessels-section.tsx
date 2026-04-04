@@ -19,7 +19,7 @@ export default function FindVesselsSection() {
               <p className="text-slate-700 text-[15px] mb-8 leading-relaxed">
                 We are committed to providing our customers with exceptional service.
               </p>
-              <Link href="/marketplace/category">
+              <Link href="/marketplace">
                 <Button
                   variant="outline"
                   className="border-[#FF3B30] text-[#FF3B30] hover:bg-[#FF3B30] hover:text-white px-8 h-12 text-[15px] font-semibold bg-transparent rounded-none transition-all"
@@ -44,7 +44,7 @@ export default function FindVesselsSection() {
               <p className="text-slate-700 text-[15px] mb-8 leading-relaxed">
                 We are committed to providing our customers with exceptional service.
               </p>
-              <Link href="/marketplace/category">
+              <Link href="/marketplace">
                 <Button
                   className="bg-[#0F172A] text-white hover:bg-black px-8 h-12 text-[15px] font-semibold rounded-none transition-all"
                 >

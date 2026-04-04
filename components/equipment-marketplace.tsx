@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
@@ -91,7 +93,7 @@ export default function EquipmentMarketplace() {
                       }
 
                       return (
-                        <div key={item.id || i} className="min-w-[calc(25%-18px)] flex-shrink-0 group flex flex-col bg-[#050B20] rounded-none overflow-hidden transition-all hover:shadow-2xl h-full border border-slate-800">
+                        <div key={item.id || i} className="w-[calc(25%-18px)] min-w-[calc(25%-18px)] flex-shrink-0 group flex flex-col bg-[#050B20] rounded-none overflow-hidden transition-all hover:shadow-2xl h-full border border-slate-800">
                           {/* Image Section */}
                           <div className="relative aspect-[4/3] overflow-hidden">
                             <Image
@@ -128,7 +130,7 @@ export default function EquipmentMarketplace() {
 
                             {/* Footer */}
                             <div className="mt-auto flex items-center justify-end border-t border-slate-800 pt-6">
-                              <Link href={`/marketplace/category/${item.id}`} className="flex items-center gap-2 text-white text-[13px] font-medium group/link hover:text-blue-400 transition-colors">
+                              <Link href={`/marketplace/${item.id}`} className="flex items-center gap-2 text-white text-[13px] font-medium group/link hover:text-blue-400 transition-colors">
                                 View Details
                                 <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
                               </Link>

@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -131,7 +133,7 @@ export default function SearchedVessels() {
                     {filteredVessels.map((vessel, i) => (
                       <div 
                         key={`${activeTab}-${vessel.id}`}
-                        className="min-w-[calc(25%-18px)] flex-shrink-0 group flex flex-col bg-[#050B20] rounded-none overflow-hidden transition-all hover:shadow-2xl h-full border border-slate-800"
+                        className="w-[calc(25%-18px)] min-w-[calc(25%-18px)] flex-shrink-0 group flex flex-col bg-[#050B20] rounded-none overflow-hidden transition-all hover:shadow-2xl h-full border border-slate-800"
                       >
                         {/* Image Section */}
                         <div className="relative aspect-[4/3] overflow-hidden">
@@ -171,7 +173,7 @@ export default function SearchedVessels() {
                           {/* Footer */}
                           <div className="mt-auto flex items-center justify-end border-t border-slate-800 pt-6">
                             <Link 
-                              href={`/marketplace/category/${vessel.id}`}
+                              href={`/marketplace/${vessel.id}`}
                               className="flex items-center gap-2 text-white text-[13px] font-medium group/link hover:text-blue-400 transition-colors"
                             >
                               View Details

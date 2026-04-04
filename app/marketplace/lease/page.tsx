@@ -158,8 +158,8 @@ function LeasePageContent() {
   const isAvailable = equipment?.status?.toLowerCase() === "available"
 
   const backHref = equipmentId
-    ? `/marketplace/category/${equipmentId}`
-    : "/marketplace/category/1"
+    ? `/marketplace/${equipmentId}`
+    : "/marketplace/1"
 
   return (
     <main className="min-h-screen bg-slate-50/50">

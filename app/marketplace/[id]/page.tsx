@@ -170,8 +170,6 @@ export default function ProductDetailsPage() {
         <nav className="flex items-center gap-2 text-sm">
           <Link href="/marketplace" className="text-slate-500 hover:text-slate-900 transition-colors">Marketplace</Link>
           <ChevronRight className="w-4 h-4 text-slate-400" />
-          <Link href="/marketplace/category" className="text-slate-500 hover:text-slate-900 transition-colors">Power Systems</Link>
-          <ChevronRight className="w-4 h-4 text-slate-400" />
           <span className="text-orange-500 font-semibold">{equipment.name}</span>
         </nav>
       </div>
@@ -433,7 +431,7 @@ export default function ProductDetailsPage() {
                       <div className="flex items-center justify-between">
                         <span className="text-slate-500 text-[11px] font-semibold">SKU: MM-EQ-{item.id}</span>
                         <Link 
-                          href={`/marketplace/category/${item.id}`}
+                          href={`/marketplace/${item.id}`}
                           className="text-orange-500 text-[12px] font-bold hover:text-orange-400 transition-colors"
                         >
                           View Details

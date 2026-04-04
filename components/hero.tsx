@@ -14,9 +14,9 @@ export default function Hero() {
   const handleSearch = (e?: React.FormEvent) => {
     e?.preventDefault()
     if (searchTerm.trim()) {
-      router.push(`/marketplace/category?search=${encodeURIComponent(searchTerm.trim())}`)
+      router.push(`/marketplace?search=${encodeURIComponent(searchTerm.trim())}`)
     } else {
-      router.push(`/marketplace/category`)
+      router.push(`/marketplace`)
     }
   }
 

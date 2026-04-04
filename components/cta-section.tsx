@@ -34,7 +34,7 @@ export default function CTASection() {
         </ScrollReveal>
 
         <ScrollReveal direction="up" delay={0.2} duration={0.8}>
-          <Link href="/marketplace/category">
+          <Link href="/marketplace">
             <button className="px-10 py-4 border-2 border-[#6B0D0D] text-[#6B0D0D] text-[15px] font-bold uppercase tracking-wider hover:bg-[#6B0D0D] hover:text-white transition-all">
               Find Out More
             </button>
