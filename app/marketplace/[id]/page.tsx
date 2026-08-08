@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import { API_ENDPOINTS } from "@/lib/api-config"
 
 const productImages = [
   "/ship-anchor-system.jpg",
@@ -84,12 +85,12 @@ export default function ProductDetailsPage() {
     if (!id) return
     async function fetchDetails() {
       try {
-        const res = await fetch(`https://musk-backend.onrender.com/api/equipment/${id}`)
+        const res = await fetch(API_ENDPOINTS.equipment.detail(id))
         const json = await res.json()
         setEquipment(json.data || json)
 
         // Fetch all equipment for "Similar Equipment"
-        const listRes = await fetch('https://musk-backend.onrender.com/api/equipment')
+        const listRes = await fetch(API_ENDPOINTS.equipment.list)
         const listJson = await listRes.json()
         const allData = Array.isArray(listJson.data) ? listJson.data : Array.isArray(listJson) ? listJson : []
         

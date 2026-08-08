@@ -75,6 +75,8 @@ const mockItems = [
 
 
 
+import { API_ENDPOINTS } from "@/lib/api-config"
+
 interface EquipmentGridProps {
   selectedCategory: string
   searchQuery?: string
@@ -89,7 +91,7 @@ export default function EquipmentGrid({ selectedCategory, searchQuery = "" }: Eq
   useEffect(() => {
     async function fetchEquipment() {
       try {
-        const res = await fetch('https://musk-backend.onrender.com/api/equipment')
+        const res = await fetch(API_ENDPOINTS.equipment.list)
         const json = await res.json()
         const data = Array.isArray(json.data) ? json.data : Array.isArray(json) ? json : []
         setEquipmentList(data)

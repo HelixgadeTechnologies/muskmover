@@ -7,6 +7,8 @@ import { ChevronLeft, ChevronRight, Bookmark, Gauge, Fuel, Settings, ArrowRight,
 import { motion, AnimatePresence } from "framer-motion"
 import ScrollReveal from "./scroll-reveal"
 
+import { API_ENDPOINTS } from "@/lib/api-config"
+
 const tabs = ["In Stock", "Rental", "Purchase"]
 
 interface Vessel {
@@ -30,17 +32,44 @@ export default function SearchedVessels() {
   useEffect(() => {
     async function fetchVessels() {
       try {
-        const response = await fetch('https://musk-backend.onrender.com/api/equipment')
+        const response = await fetch(API_ENDPOINTS.vessels.list)
         const result = await response.json()
-        if (result.success) {
-          // Filter for vessels category or things that look like vessels
-          const allVessels = result.data.filter((item: Vessel) => 
-            item.category.toLowerCase() === 'vessels' || 
-            item.name.toLowerCase().includes('vessel') ||
-            item.name.toLowerCase().includes('ship') ||
-            item.name.toLowerCase().includes('marina')
-          )
-          setVessels(allVessels)
+        if (result.success && Array.isArray(result.data) && result.data.length > 0) {
+          const mappedVessels = result.data.map((item: any) => ({
+            id: item.id,
+            name: item.name || "Vessel",
+            details: item.details || item.type || "Offshore Marine Vessel",
+            status: item.status || "available",
+            yearManufactured: item.yearBuilt || item.yearManufactured || 2022,
+            weight: item.weight || 50000,
+            category: item.type || item.category || "Vessels",
+            images: item.images || null,
+          }))
+          setVessels(mappedVessels)
+        } else {
+          // Fallback to equipment endpoint filtered by vessels if vessels list is empty
+          const eqResponse = await fetch(API_ENDPOINTS.equipment.list)
+          const eqResult = await eqResponse.json()
+          if (eqResult.success && Array.isArray(eqResult.data)) {
+            const allVessels = eqResult.data.filter((item: any) =>
+              (item.category && item.category.toLowerCase() === "vessels") ||
+              (item.name && (
+                item.name.toLowerCase().includes("vessel") ||
+                item.name.toLowerCase().includes("ship") ||
+                item.name.toLowerCase().includes("marina")
+              ))
+            ).map((item: any) => ({
+              id: item.id,
+              name: item.name,
+              details: item.details || "Offshore Vessel",
+              status: item.status || "available",
+              yearManufactured: item.yearManufactured || 2022,
+              weight: item.weight || 50000,
+              category: item.category || "Vessels",
+              images: item.images || null,
+            }))
+            setVessels(allVessels)
+          }
         }
       } catch (error) {
         console.error('Error fetching vessels:', error)

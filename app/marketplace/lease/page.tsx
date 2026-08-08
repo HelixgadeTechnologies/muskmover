@@ -8,6 +8,7 @@ import { Check, ChevronDown, MapPin, ArrowLeft, ArrowRight, ShieldCheck, Truck, 
 import { Button } from "@/components/ui/button"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import { API_ENDPOINTS } from "@/lib/api-config"
 
 const steps = [
   { label: "EQUIPMENT", number: 1, completed: true },
@@ -59,7 +60,7 @@ function LeasePageContent() {
     if (!equipmentId) return
     async function fetchEquipment() {
       try {
-        const res = await fetch(`https://musk-backend.onrender.com/api/equipment/${equipmentId}`)
+        const res = await fetch(API_ENDPOINTS.equipment.detail(equipmentId))
         const json = await res.json()
         setEquipment(json.data || json)
       } catch (err) {
@@ -112,7 +113,7 @@ function LeasePageContent() {
         crewRequested: formData.crewRequested
       }
 
-      const res = await fetch('https://musk-backend.onrender.com/api/orders', {
+      const res = await fetch(API_ENDPOINTS.orders.create, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
