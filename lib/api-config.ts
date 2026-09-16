@@ -1,5 +1,5 @@
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://206.189.238.173:5000/api";
+  process.env.NEXT_PUBLIC_API_URL || "http://206.189.238.173:80/api";
 
 export const API_ENDPOINTS = {
   auth: {
