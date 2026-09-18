@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { ArrowRight, Loader2, Package, Sparkles } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
 import ScrollReveal from "./scroll-reveal"
 import EcommerceProductCard from "./ecommerce-product-card"
 import { API_ENDPOINTS } from "@/lib/api-config"
@@ -13,8 +12,8 @@ export interface CategoryProductSectionProps {
   title: string
   subtitle: string
   subcategories?: string[]
-  fallbackItems?: any[]
   bgDark?: boolean
+  hideIfEmpty?: boolean
 }
 
 export default function CategoryProductSection({
@@ -22,8 +21,8 @@ export default function CategoryProductSection({
   title,
   subtitle,
   subcategories = ["All"],
-  fallbackItems = [],
   bgDark = false,
+  hideIfEmpty = true,
 }: CategoryProductSectionProps) {
   const [activeSubcat, setActiveSubcat] = useState(subcategories[0] || "All")
   const [items, setItems] = useState<any[]>([])
@@ -32,43 +31,92 @@ export default function CategoryProductSection({
   useEffect(() => {
     async function fetchCategoryItems() {
       try {
-        let endpoint = API_ENDPOINTS.equipment.list
-        if (categoryId === "vessels") {
-          endpoint = API_ENDPOINTS.vessels.list
+        const [eqRes, vesselsRes] = await Promise.allSettled([
+          fetch(API_ENDPOINTS.equipment.list).then((r) => r.json()),
+          fetch(API_ENDPOINTS.vessels.list).then((r) => r.json()),
+        ])
+
+        const combined: any[] = []
+        if (eqRes.status === "fulfilled" && eqRes.value) {
+          const data = Array.isArray(eqRes.value.data)
+            ? eqRes.value.data
+            : Array.isArray(eqRes.value)
+            ? eqRes.value
+            : []
+          combined.push(...data)
+        }
+        if (vesselsRes.status === "fulfilled" && vesselsRes.value) {
+          const data = Array.isArray(vesselsRes.value.data)
+            ? vesselsRes.value.data
+            : Array.isArray(vesselsRes.value)
+            ? vesselsRes.value
+            : []
+          combined.push(...data)
         }
 
-        const res = await fetch(endpoint)
-        const result = await res.json()
+        // Deduplicate by ID
+        const map = new Map<string | number, any>()
+        combined.forEach((item) => {
+          if (item && item.id != null) {
+            map.set(item.id, item)
+          }
+        })
+        const allFetched = Array.from(map.values())
 
-        let fetchedList: any[] = []
-        if (result.success && Array.isArray(result.data)) {
-          fetchedList = result.data
-        } else if (Array.isArray(result)) {
-          fetchedList = result
-        }
+        // Filter items matching the requested category
+        const filteredList = allFetched.filter((item: any) => {
+          const cat = (item.category || item.type || "").toLowerCase().trim()
+          const name = (item.name || "").toLowerCase()
+          const targetCat = categoryId.toLowerCase().trim()
 
-        // Filter by category if not fetching vessels list endpoint directly
-        if (categoryId !== "vessels" && fetchedList.length > 0) {
-          fetchedList = fetchedList.filter((item: any) => {
-            const cat = (item.category || "").toLowerCase()
+          if (targetCat === "vessels") {
             return (
-              cat === categoryId.toLowerCase() ||
-              cat.includes(categoryId.toLowerCase()) ||
-              (categoryId === "cargo-equipment" && cat.includes("cargo")) ||
-              (categoryId === "safety" && (cat.includes("safety") || cat.includes("navigation")))
+              cat === "vessels" ||
+              cat.includes("vessel") ||
+              name.includes("vessel") ||
+              name.includes("ship") ||
+              name.startsWith("mv ")
             )
-          })
-        }
+          }
+          if (targetCat === "cargo-equipment") {
+            return (
+              cat === "cargo-equipment" ||
+              cat.includes("cargo") ||
+              cat.includes("machinery")
+            )
+          }
+          if (targetCat === "propulsion") {
+            return (
+              cat === "propulsion" ||
+              cat.includes("engine") ||
+              cat.includes("generator")
+            )
+          }
+          if (targetCat === "safety") {
+            return (
+              cat === "safety" ||
+              cat.includes("navigation") ||
+              cat.includes("solas")
+            )
+          }
+          return cat === targetCat || cat.includes(targetCat)
+        })
 
         // Map items to uniform structure
-        const mapped = fetchedList.map((item: any) => {
-          let imageUrl = "/large-container-ship.jpg"
+        const mapped = filteredList.map((item: any) => {
+          let imageUrl = "/marine-diesel-engine.jpg"
           if (item.images) {
             if (Array.isArray(item.images) && item.images.length > 0) {
               imageUrl = item.images[0]
-            } else if (typeof item.images === "string") {
-              const first = item.images.split(",")[0].trim()
-              if (first && !first.startsWith("blob:")) imageUrl = first
+            } else if (typeof item.images === "string" && item.images.trim() !== "") {
+              try {
+                const parsed = JSON.parse(item.images)
+                if (Array.isArray(parsed) && parsed.length > 0) imageUrl = parsed[0]
+                else if (typeof parsed === "string") imageUrl = parsed
+              } catch {
+                const first = item.images.split(",")[0].trim()
+                if (first && !first.startsWith("blob:")) imageUrl = first
+              }
             }
           }
 
@@ -79,31 +127,33 @@ export default function CategoryProductSection({
             details: item.details || item.description || "Offshore certified marine asset",
             image: imageUrl,
             status: item.status || "available",
-            acquisitionType: item.acquisitionType || "LEASE OR BUY",
-            priceDisplay: item.dailyRate ? `₦${Number(item.dailyRate).toLocaleString()} / day` : "Contact for Rate",
-            year: item.yearBuilt || item.yearManufactured || 2022,
-            weightOrCapacity: item.weight ? `${(item.weight / 1000).toFixed(1)}k tonnes` : item.capacity || "Standard",
-            location: item.location || "Port Harcourt Hub",
+            acquisitionType:
+              item.dailyRate && item.dailyRate > 0 ? "LEASE OR BUY" : "DIRECT PURCHASE",
+            priceDisplay: item.dailyRate
+              ? `₦${Number(item.dailyRate).toLocaleString()} / day`
+              : item.monthlyRate
+              ? `₦${Number(item.monthlyRate).toLocaleString()} / mo`
+              : "Contact for Rate",
+            year: item.yearManufactured || item.yearBuilt || 2022,
+            weightOrCapacity: item.weight
+              ? `${(item.weight / 1000).toFixed(1)}k tonnes`
+              : item.capacity || "Standard",
+            location: item.company?.location || item.location || "Port Harcourt",
             condition: item.condition || "Operational",
           }
         })
 
-        // Merge with fallback items if backend has fewer items
-        if (mapped.length > 0) {
-          setItems([...mapped, ...fallbackItems.slice(mapped.length)])
-        } else {
-          setItems(fallbackItems)
-        }
+        setItems(mapped)
       } catch (err) {
         console.error(`Failed to load category items for ${categoryId}:`, err)
-        setItems(fallbackItems)
+        setItems([])
       } finally {
         setLoading(false)
       }
     }
 
     fetchCategoryItems()
-  }, [categoryId, fallbackItems])
+  }, [categoryId])
 
   // Filter by active subcategory pill
   const displayedItems = items.filter((item) => {
@@ -111,6 +161,11 @@ export default function CategoryProductSection({
     const text = (item.title + " " + item.category + " " + (item.details || "")).toLowerCase()
     return text.includes(activeSubcat.toLowerCase())
   })
+
+  // Hide section if configured to do so and there are no live items
+  if (hideIfEmpty && !loading && items.length === 0) {
+    return null
+  }
 
   return (
     <section
@@ -190,7 +245,7 @@ export default function CategoryProductSection({
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 min-h-[350px]">
             <Loader2 className="w-8 h-8 text-orange-500 animate-spin mb-3" />
-            <p className="text-slate-400 text-sm font-medium">Loading products...</p>
+            <p className="text-slate-400 text-sm font-medium">Loading products from live inventory...</p>
           </div>
         ) : displayedItems.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -217,7 +272,7 @@ export default function CategoryProductSection({
           <div className="flex flex-col items-center justify-center py-16 text-center border border-dashed border-slate-300 rounded-2xl p-8">
             <Package className="w-12 h-12 text-slate-300 mb-3" />
             <h4 className="text-lg font-bold text-slate-700">No items found in this section</h4>
-            <p className="text-slate-500 text-xs mt-1">Try selecting another subcategory tab.</p>
+            <p className="text-slate-500 text-xs mt-1">Check back soon or explore our full marketplace.</p>
           </div>
         )}
       </div>

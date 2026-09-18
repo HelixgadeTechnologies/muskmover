@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ShieldCheck, Award, ArrowRight, Building2, CheckCircle2 } from "lucide-react"
+import { Award, ArrowRight, Building2, CheckCircle2 } from "lucide-react"
 import ScrollReveal from "./scroll-reveal"
+import { API_ENDPOINTS } from "@/lib/api-config"
 
 interface Partner {
   id: string
@@ -18,7 +19,7 @@ interface Partner {
   logoBg: string
 }
 
-const partners: Partner[] = [
+const strategicPartners: Partner[] = [
   {
     id: "clinton",
     name: "Clinton Oilfield Services",
@@ -63,20 +64,71 @@ const partners: Partner[] = [
     accentColor: "from-emerald-500 to-teal-600",
     logoBg: "bg-white border-slate-200",
   },
+  {
+    id: "primetop",
+    name: "Prime-Top Inspection Ltd",
+    shortName: "Prime-Top",
+    category: "Regulators & Class",
+    role: "Offshore & Marine Technical Inspection Services",
+    badge: "Inspection Partner",
+    image: "/image/primetop.jpeg",
+    accentColor: "from-blue-600 to-cyan-500",
+    logoBg: "bg-white border-slate-200",
+  },
 ]
 
 const categories = ["All Partners", "Energy & Offshore", "Regulators & Class", "Shipbuilders & OEM"]
 
 export default function OurPartners() {
   const [selectedCat, setSelectedCat] = useState("All Partners")
+  const [partnerList, setPartnerList] = useState<Partner[]>(strategicPartners)
 
-  const filteredPartners = partners.filter((p) => {
+  useEffect(() => {
+    async function loadLiveCompanies() {
+      try {
+        const res = await fetch(API_ENDPOINTS.companies.list)
+        const json = await res.json()
+        if (json.success && Array.isArray(json.data)) {
+          const approvedCompanies = json.data.filter((c: any) => c.status === "Approved")
+          if (approvedCompanies.length > 0) {
+            const mappedLive: Partner[] = approvedCompanies.map((c: any) => ({
+              id: `api-comp-${c.id}`,
+              name: c.name,
+              shortName: c.name.split(" ")[0] || c.name,
+              category: "Energy & Offshore" as const,
+              role: c.description || `Verified Maritime Operator in ${c.location || "Nigeria"}`,
+              badge: "Approved Vendor",
+              image: c.logo || "/image/clinton.jpeg",
+              accentColor: "from-orange-500 to-amber-600",
+              logoBg: "bg-white border-slate-200",
+            }))
+
+            // Merge with strategic partners
+            const map = new Map<string, Partner>()
+            mappedLive.forEach((p) => map.set(p.name.toLowerCase().trim(), p))
+            strategicPartners.forEach((p) => {
+              if (!map.has(p.name.toLowerCase().trim())) {
+                map.set(p.name.toLowerCase().trim(), p)
+              }
+            })
+            setPartnerList(Array.from(map.values()))
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch live partner companies", err)
+      }
+    }
+
+    loadLiveCompanies()
+  }, [])
+
+  const filteredPartners = partnerList.filter((p) => {
     if (selectedCat === "All Partners") return true
     return p.category === selectedCat
   })
 
   // Repeat items for continuous marquee loop
-  const marqueePartners = [...partners, ...partners, ...partners, ...partners]
+  const marqueePartners = [...partnerList, ...partnerList, ...partnerList]
 
   return (
     <section className="py-20 px-4 bg-slate-900 text-white relative overflow-hidden border-t border-slate-800">
@@ -230,4 +282,3 @@ export default function OurPartners() {
     </section>
   )
 }
-

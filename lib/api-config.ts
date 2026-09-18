@@ -1,5 +1,7 @@
 export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://206.189.238.173:80/api";
+  process.env.NEXT_PUBLIC_API_URL || "https://api.muskmover.ng/api";
+
+export const API_DOCS_URL = "https://api.muskmover.ng/api-docs/";
 
 export const API_ENDPOINTS = {
   auth: {

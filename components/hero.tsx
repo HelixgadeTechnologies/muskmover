@@ -18,76 +18,9 @@ interface SearchItem {
   type: "vessel" | "equipment"
 }
 
-// Fallback search database to guarantee instantaneous matches & offline resilience
-const fallbackItems: SearchItem[] = [
-  {
-    id: 101,
-    name: "DP2 Platform Supply Vessel (PSV)",
-    category: "Vessels",
-    details: "850 sqm deck area, 45 pax accommodation",
-    image: "/large-cargo-ship.png",
-    status: "Available",
-    type: "vessel",
-  },
-  {
-    id: 102,
-    name: "150T Anchor Handling Tug Supply (AHTS)",
-    category: "Vessels",
-    details: "150T bollard pull, high capacity towing winch",
-    image: "/large-container-ship.jpg",
-    status: "Available",
-    type: "vessel",
-  },
-  {
-    id: 103,
-    name: "SS Marina - Fast Crew Supplier (FCS 3307)",
-    category: "Vessels",
-    details: "33 knot speed, 80 crew capacity",
-    image: "/hero-ocean.jpg",
-    status: "Available",
-    type: "vessel",
-  },
-  {
-    id: 201,
-    name: "Heavy Duty Anchor Handling Winch",
-    category: "Cargo & Machinery",
-    details: "250 Ton load capacity hydraulic winch",
-    image: "/ship-anchor-system.jpg",
-    status: "Available",
-    type: "equipment",
-  },
-  {
-    id: 202,
-    name: "High-Pressure Hydraulic Pump F-1600",
-    category: "Pumps & Hydraulics",
-    details: "5000 PSI operating pressure mud pump",
-    image: "/hydraulic-pump-equipment.jpg",
-    status: "Available",
-    type: "equipment",
-  },
-  {
-    id: 301,
-    name: "CAT 3516B Marine Power System Generator",
-    category: "Engines & Power",
-    details: "2000 ekW output marine diesel generator",
-    image: "/marine-diesel-engine.jpg",
-    status: "Available",
-    type: "equipment",
-  },
-  {
-    id: 401,
-    name: "TEMPSC Lifeboat System (80 Pax)",
-    category: "Safety & SOLAS",
-    details: "SOLAS approved 80 persons survival craft",
-    image: "/large-cargo-ship.png",
-    status: "Available",
-    type: "equipment",
-  },
-]
-
 export default function Hero() {
   const [searchTerm, setSearchTerm] = useState("")
-  const [allItems, setAllItems] = useState<SearchItem[]>(fallbackItems)
+  const [allItems, setAllItems] = useState<SearchItem[]>([])
   const [filteredResults, setFilteredResults] = useState<SearchItem[]>([])
   const [isOpen, setIsOpen] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -152,7 +85,6 @@ export default function Hero() {
         if (combined.length > 0) {
           // Deduplicate by ID
           const map = new Map<string | number, SearchItem>()
-          fallbackItems.forEach((i) => map.set(i.id, i))
           combined.forEach((i) => map.set(i.id, i))
           setAllItems(Array.from(map.values()))
         }

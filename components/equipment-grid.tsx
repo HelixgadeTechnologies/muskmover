@@ -4,77 +4,6 @@ import { ChevronLeft, ChevronRight, ChevronDown, Settings, MapPin, Gauge, Fuel, 
 import { useEffect, useState } from "react"
 import EquipmentCard from "./equipment-card"
 
-const mockItems = [
-  {
-    title: "Heavy Duty Anchor Handling Winch",
-    image: "/ship-anchor-system.jpg",
-    tags: ["BUY OR LEASE"],
-    isNew: true,
-    specs: [
-      { icon: Settings, label: "Load Capacity", value: "250 Tons" },
-      { icon: Gauge, label: "Engine", value: "4500HP Diesel" },
-      { icon: MapPin, label: "Location", value: "Port Harcourt" },
-    ],
-  },
-  {
-    title: "DP2 Platform Supply Vessel (PSV)",
-    image: "/large-cargo-ship.png",
-    tags: ["LEASE ONLY"],
-    isNew: false,
-    specs: [
-        { icon: Package, label: "Deck Area", value: "850 sqm" },
-        { icon: Users, label: "Accommodation", value: "45 pax" },
-        { icon: MapPin, label: "Location", value: "Lagos Free Zone" },
-    ],
-  },
-  {
-    title: "Work Class Subsea ROV Unit",
-    image: "/large-container-ship.jpg",
-    tags: ["BUY ONLY"],
-    isNew: true,
-    specs: [
-        { icon: Gauge, label: "Depth Rating", value: "3,000m" },
-        { icon: Settings, label: "Cameras", value: "4K UHD Triple" },
-        { icon: MapPin, label: "Location", value: "Warri Hub" },
-    ],
-  },
-  {
-    title: "CAT 3516B Marine Power System",
-    image: "/marine-diesel-engine.jpg",
-    tags: ["BUY OR LEASE"],
-    isNew: true,
-    specs: [
-        { icon: Fuel, label: "Output", value: "2000 ekW" },
-        { icon: Gauge, label: "RPM", value: "1200 - 1800" },
-        { icon: MapPin, label: "Location", value: "Port Harcourt" },
-    ],
-  },
-  {
-    title: "High-Pressure Mud Pump F-1600",
-    image: "/hydraulic-pump-equipment.jpg",
-    tags: ["LEASE ONLY"],
-    isNew: false,
-    specs: [
-        { icon: Gauge, label: "Pressure", value: "5000 PSI" },
-        { icon: Settings, label: "Stroke Length", value: "12\"" },
-        { icon: MapPin, label: "Location", value: "Warri Hub" },
-    ],
-  },
-  {
-    title: "TEMPSC Lifeboat System (80 Pax)",
-    image: "/large-cargo-ship.png",
-    tags: ["BUY NOW"],
-    isNew: true,
-    specs: [
-        { icon: Users, label: "Capacity", value: "80 Persons" },
-        { icon: Shield, label: "SOLAS Approved", value: "Yes" },
-        { icon: MapPin, label: "Location", value: "Lagos Port" },
-    ],
-  }
-]
-
-
-
 import { API_ENDPOINTS } from "@/lib/api-config"
 
 interface EquipmentGridProps {
@@ -91,10 +20,29 @@ export default function EquipmentGrid({ selectedCategory, searchQuery = "" }: Eq
   useEffect(() => {
     async function fetchEquipment() {
       try {
-        const res = await fetch(API_ENDPOINTS.equipment.list)
-        const json = await res.json()
-        const data = Array.isArray(json.data) ? json.data : Array.isArray(json) ? json : []
-        setEquipmentList(data)
+        const [eqRes, vesselsRes] = await Promise.allSettled([
+          fetch(API_ENDPOINTS.equipment.list).then((r) => r.json()),
+          fetch(API_ENDPOINTS.vessels.list).then((r) => r.json()),
+        ])
+
+        const combined: any[] = []
+        if (eqRes.status === "fulfilled" && eqRes.value) {
+          const data = Array.isArray(eqRes.value.data) ? eqRes.value.data : Array.isArray(eqRes.value) ? eqRes.value : []
+          combined.push(...data)
+        }
+        if (vesselsRes.status === "fulfilled" && vesselsRes.value) {
+          const data = Array.isArray(vesselsRes.value.data) ? vesselsRes.value.data : Array.isArray(vesselsRes.value) ? vesselsRes.value : []
+          combined.push(...data)
+        }
+
+        // Deduplicate by ID
+        const map = new Map<string | number, any>()
+        combined.forEach((item) => {
+          if (item && item.id != null) {
+            map.set(item.id, item)
+          }
+        })
+        setEquipmentList(Array.from(map.values()))
       } catch (error) {
         console.error("Failed to fetch equipment", error)
       } finally {
