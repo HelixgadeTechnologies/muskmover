@@ -94,7 +94,7 @@ export default function TermsContent() {
                     <div className="space-y-4">
                         <div className="flex items-center gap-4 text-slate-600">
                             <MapPin className="w-5 h-5 text-red-500" />
-                            <span className="text-sm md:text-base">Lekki, Delta, Nigeria.</span>
+                            <span className="text-sm md:text-base">Port Harcourt, Rivers State, Nigeria</span>
                         </div>
                         <div className="flex items-center gap-4 text-slate-600">
                             <Phone className="w-5 h-5 text-red-500" />
