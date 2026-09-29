@@ -25,9 +25,12 @@ export default function ContactInfoForm() {
                                     <span className="text-sm md:text-base font-light text-slate-200">+234 807 354 8926 | +234 906 094 5385</span>
                                 </div>
 
-                                <div className="flex items-center gap-6">
-                                    <Mail className="w-6 h-6 text-white" />
-                                    <span className="text-sm md:text-base font-light text-slate-200">muskmoverltd@gmail.com</span>
+                                <div className="flex items-start gap-6">
+                                    <Mail className="w-6 h-6 text-white shrink-0 mt-0.5" />
+                                    <div className="flex flex-col gap-1 text-sm md:text-base font-light text-slate-200">
+                                        <a href="mailto:info@muskmover.ng" className="hover:text-white transition-colors">info@muskmover.ng</a>
+                                        <a href="mailto:support@muskmover.ng" className="hover:text-white transition-colors">support@muskmover.ng</a>
+                                    </div>
                                 </div>
 
                                 <div className="flex items-center gap-6">

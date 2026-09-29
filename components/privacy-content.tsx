@@ -109,13 +109,17 @@ export default function PrivacyContent() {
                             <Phone className="w-5 h-5 text-red-500" />
                             <span className="text-sm md:text-base">+234 807 354 8926 | +234 906 094 5385</span>
                         </div>
-                        <div className="flex items-center gap-4 text-slate-600">
-                            <Mail className="w-5 h-5 text-red-500" />
-                            <span className="text-sm md:text-base">muskmoverltd@gmail.com</span>
+                        <div className="flex items-start gap-4 text-slate-600">
+                            <Mail className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-sm md:text-base">
+                                <a href="mailto:info@muskmover.ng" className="hover:underline">info@muskmover.ng</a>
+                                <span className="hidden sm:inline text-slate-400">|</span>
+                                <a href="mailto:support@muskmover.ng" className="hover:underline">support@muskmover.ng</a>
+                            </div>
                         </div>
                         <div className="flex items-center gap-4 text-slate-600">
                             <Globe className="w-5 h-5 text-red-500" />
-                            <span className="text-sm md:text-base">www.muskmover.com</span>
+                            <span className="text-sm md:text-base">www.muskmover.ng</span>
                         </div>
                     </div>
                 </div>
