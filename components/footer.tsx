@@ -77,9 +77,9 @@ export default function Footer() {
             <h4 className="text-[18px] font-bold text-slate-900 mb-8">Company</h4>
             <ul className="space-y-4">
               <li><Link href="/about" className="text-[15px] text-slate-600 hover:text-slate-900">About Us</Link></li>
-              <li><Link href="/services" className="text-[15px] text-slate-600 hover:text-slate-900">Services</Link></li>
-              <li><Link href="#" className="text-[15px] text-slate-600 hover:text-slate-900">FAQs</Link></li>
-              <li><Link href="#" className="text-[15px] text-slate-600 hover:text-slate-900">Terms</Link></li>
+              <li><Link href="/marine-services" className="text-[15px] text-slate-600 hover:text-slate-900">Marine Services</Link></li>
+              <li><Link href="/services" className="text-[15px] text-slate-600 hover:text-slate-900">Services Overview</Link></li>
+              <li><Link href="/marketplace" className="text-[15px] text-slate-600 hover:text-slate-900">Marketplace</Link></li>
               <li><Link href="/contact" className="text-[15px] text-slate-600 hover:text-slate-900">Contact Us</Link></li>
             </ul>
           </div>

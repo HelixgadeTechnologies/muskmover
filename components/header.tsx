@@ -12,7 +12,8 @@ export default function Header() {
 
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/services", label: "Services" },
+    { href: "/marine-services", label: "Marine Services" },
+    { href: "/services", label: "Overview" },
     { href: "/marketplace", label: "Marketplace" },
     { href: "/about", label: "About" },
   ]
