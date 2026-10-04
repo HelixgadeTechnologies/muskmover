@@ -16,8 +16,9 @@ interface EquipmentCardProps {
 export default function EquipmentCard({ id, title, image, tags, specs, isNew }: EquipmentCardProps) {
   return (
     <Link href={`/marketplace/${id || 1}`} className="block h-full">
-      <div className="group bg-slate-50 border border-slate-100 rounded-none overflow-hidden hover:shadow-2xl transition-all h-full flex flex-col">
-        <div className="relative aspect-video overflow-hidden">
+      <div className="group bg-white border border-slate-200/80 rounded-2xl overflow-hidden hover:shadow-xl hover:border-orange-500/40 transition-all duration-300 h-full flex flex-col">
+        {/* Enlarged, prominent image container */}
+        <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
           <Image
             src={image}
             alt={title}
@@ -25,30 +26,37 @@ export default function EquipmentCard({ id, title, image, tags, specs, isNew }: 
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
           {/* Tags overlay */}
-          <div className="absolute top-4 left-4 flex gap-2">
+          <div className="absolute top-3 left-3 flex flex-wrap gap-1.5 z-10">
             {tags.map((tag, idx) => (
-              <span key={idx} className="bg-orange-600/90 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1.5 uppercase tracking-wider">
+              <span key={idx} className="bg-orange-600/90 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">
                 {tag}
               </span>
             ))}
             {isNew && (
-              <span className="bg-green-600/90 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1.5 uppercase tracking-wider">
+              <span className="bg-green-600/90 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">
                 NEW
               </span>
             )}
           </div>
         </div>
-        <div className="p-8 flex-1 flex flex-col">
-          <h3 className="text-2xl font-bold text-slate-900 mb-4">{title}</h3>
+
+        {/* Compact content section */}
+        <div className="p-4 md:p-5 flex-1 flex flex-col">
+          <h3 
+            className="text-sm md:text-base font-bold text-slate-900 mb-1.5 line-clamp-2 group-hover:text-orange-600 transition-colors"
+            title={title}
+          >
+            {title}
+          </h3>
           
           {/* Specs as description */}
-          <p className="text-slate-600 text-[15px] leading-relaxed mb-6 line-clamp-2">
+          <p className="text-slate-500 text-xs leading-relaxed mb-4 line-clamp-1">
             {specs.map(s => `${s.label}: ${s.value}`).join(" · ")}
           </p>
 
-          <div className="mt-auto">
-            <span className="inline-flex items-center gap-2 text-orange-600 font-bold text-sm hover:gap-3 transition-all">
-              View Details <ArrowRight className="w-4 h-4" />
+          <div className="mt-auto pt-3 border-t border-slate-100">
+            <span className="inline-flex items-center gap-1.5 text-orange-600 font-bold text-xs uppercase tracking-wider group-hover:gap-2.5 transition-all">
+              View Details <ArrowRight className="w-3.5 h-3.5" />
             </span>
           </div>
         </div>
